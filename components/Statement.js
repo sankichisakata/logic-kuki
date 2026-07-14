@@ -10,6 +10,9 @@ export default function Statement() {
   return (
     <section className="statement">
       <div className="wrap">
+        <div className="statement-photo" data-reveal>
+          <img src="/assets/processed/hero_aerial.webp" alt="久喜LOGIC 倉庫全体" />
+        </div>
         <p data-reveal>
           東北自動車道「加須IC」まで<span className="accent">3.9km</span>。
           <br />
