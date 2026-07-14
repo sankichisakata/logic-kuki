@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ScrollChrome() {
   const navRef = useRef(null);
   const railFillRef = useRef(null);
+  const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
     let ticking = false;
@@ -20,6 +21,7 @@ export default function ScrollChrome() {
         const progress = docHeight > 0 ? Math.max(0, Math.min(1, scrollY / docHeight)) : 0;
         railFillRef.current.style.height = `${progress * 100}%`;
       }
+      setShowTopBtn(scrollY > window.innerHeight * 0.8);
     }
 
     function onScroll() {
@@ -38,6 +40,11 @@ export default function ScrollChrome() {
     };
   }, []);
 
+  function scrollToTop(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   return (
     <>
       <div className="rail">
@@ -45,14 +52,22 @@ export default function ScrollChrome() {
         <div className="rail-label">スクロール</div>
       </div>
       <nav className="nav" ref={navRef}>
-        <div className="nav-logo">
+        <a className="nav-logo" href="#top" onClick={scrollToTop}>
           <span className="dot" />
           久喜LOGIC
-        </div>
+        </a>
         <a className="nav-cta" href="#viewing">
           内覧会に申し込む →
         </a>
       </nav>
+      <button
+        type="button"
+        className={`back-to-top${showTopBtn ? ' is-visible' : ''}`}
+        onClick={scrollToTop}
+        aria-label="トップに戻る"
+      >
+        ↑
+      </button>
     </>
   );
 }

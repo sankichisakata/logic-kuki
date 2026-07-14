@@ -385,6 +385,12 @@ h2.section-title {
   gap: 8px;
   color: #ffffff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.nav-logo:hover {
+  opacity: 0.8;
 }
 
 .nav.is-scrolled .nav-logo {
@@ -400,29 +406,31 @@ h2.section-title {
   display: inline-block;
 }
 
+/* Filled, high-contrast CTA so it reads as the one action on the page
+   worth taking — orange against the blue-and-white field. */
 .nav-cta {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.05em;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  padding: 9px 18px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--accent-2);
+  padding: 10px 20px;
   border-radius: 999px;
-  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
   white-space: nowrap;
   color: #ffffff;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  background: var(--accent-2);
+  box-shadow: 0 6px 18px rgba(255, 122, 41, 0.35);
 }
 
 .nav.is-scrolled .nav-cta {
-  border: 1px solid var(--line-strong);
-  color: var(--ink);
-  text-shadow: none;
+  box-shadow: 0 4px 12px rgba(255, 122, 41, 0.28);
 }
 
 .nav-cta:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--ink);
+  background: #ff8c47;
+  box-shadow: 0 8px 22px rgba(255, 122, 41, 0.45);
+  transform: translateY(-1px);
 }
 
 /* ---------- Progress rail (signature element) ---------- */
@@ -464,6 +472,49 @@ h2.section-title {
   color: var(--ink-faint);
   writing-mode: vertical-rl;
   white-space: nowrap;
+}
+
+/* ---------- Back to top ---------- */
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 180;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(16, 30, 50, 0.14);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  border-color: var(--accent);
+  background: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 44px;
+    height: 44px;
+  }
 }
 
 /* ---------- Statement ---------- */
