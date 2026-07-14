@@ -79,6 +79,29 @@ a {
   z-index: 1;
 }
 
+/* ---------- Top banner ---------- */
+/* A plain, uncropped view of the whole building right under the fixed
+   nav — the aspect-ratio matches the source photo exactly, so
+   object-fit: cover never has to crop anything. */
+.top-banner {
+  padding-top: 88px;
+  background: var(--bg);
+}
+
+.top-banner-frame {
+  max-width: 1400px;
+  margin: 0 auto;
+  aspect-ratio: 1090 / 614;
+  overflow: hidden;
+}
+
+.top-banner-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ---------- Hero ---------- */
 .hero-scroll {
   position: relative;

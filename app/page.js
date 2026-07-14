@@ -1,6 +1,7 @@
 import ScrollChrome from '@/components/ScrollChrome';
 import ScrollReveal from '@/components/ScrollReveal';
 import BackgroundScene from '@/components/BackgroundScene';
+import TopBanner from '@/components/TopBanner';
 import Hero from '@/components/Hero';
 import Statement from '@/components/Statement';
 import Spec from '@/components/Spec';
@@ -18,6 +19,7 @@ export default function Home() {
       <ScrollChrome />
       <ScrollReveal />
       <main id="top" className="page-content">
+        <TopBanner />
         <Hero />
         <Statement />
         <Spec />
