@@ -28,6 +28,13 @@ function fadeWindow(p, inStart, inEnd, outStart, outEnd) {
 const HERO_VH_DESKTOP = 460;
 const HERO_VH_MOBILE = 320;
 
+// Scroll progress (0..1) at which each new copy beat has just finished
+// fading in (matches the fadeWindow inEnd values below) — pausing right
+// there holds the fully-visible text still for a beat instead of letting
+// the user blow past it mid-fade.
+const PAUSE_POINTS = [0.42, 0.76];
+const PAUSE_MS = 550;
+
 export default function Hero() {
   const sectionRef = useRef(null);
   const photoRef = useRef(null);
@@ -37,12 +44,29 @@ export default function Hero() {
   const copy3Ref = useRef(null);
   const cueRef = useRef(null);
   const [heroVh, setHeroVh] = useState(HERO_VH_DESKTOP);
+  const pauseRef = useRef({ locked: false, lastP: 0, triggered: PAUSE_POINTS.map(() => false), timer: null });
 
   useEffect(() => {
     let ticking = false;
 
     function applyHeroVh() {
       setHeroVh(window.innerWidth <= 760 ? HERO_VH_MOBILE : HERO_VH_DESKTOP);
+    }
+
+    function lockScrollAt(targetY) {
+      const state = pauseRef.current;
+      state.locked = true;
+      window.scrollTo({ top: targetY, behavior: 'auto' });
+      // preventDefault on wheel/touchmove alone is unreliable once Chrome
+      // has already committed a gesture to the compositor's fast scroll
+      // path — toggling overflow-y on the root element forces the page to
+      // genuinely stop, regardless of input device or gesture timing.
+      document.documentElement.style.overflowY = 'hidden';
+      clearTimeout(state.timer);
+      state.timer = setTimeout(() => {
+        state.locked = false;
+        document.documentElement.style.overflowY = '';
+      }, PAUSE_MS);
     }
 
     function update() {
@@ -53,6 +77,26 @@ export default function Hero() {
       const top = section.offsetTop;
       const scrollable = section.offsetHeight - window.innerHeight;
       const p = scrollable > 0 ? clamp((scrollY - top) / scrollable, 0, 1) : 0;
+
+      if (scrollable > 0) {
+        const state = pauseRef.current;
+        // Only arm the pause for continuous, small-step scrolling (wheel/
+        // touch). A big jump in one frame means this is a programmatic
+        // scroll (back-to-top, an anchor link, initial hash) — those
+        // should land where requested, not get caught by a pause point.
+        const deltaP = Math.abs(p - state.lastP);
+        PAUSE_POINTS.forEach((pt, idx) => {
+          const crossed = (state.lastP < pt && p >= pt) || (state.lastP > pt && p <= pt);
+          if (!state.locked && !state.triggered[idx] && crossed && deltaP < 0.15) {
+            state.triggered[idx] = true;
+            lockScrollAt(top + pt * scrollable);
+          }
+          if (Math.abs(p - pt) > 0.08) {
+            state.triggered[idx] = false;
+          }
+        });
+        state.lastP = p;
+      }
 
       const e = easeOutCubic(p);
 
@@ -107,13 +151,29 @@ export default function Hero() {
       onScroll();
     }
 
+    // While a pause is active, swallow the scroll input that's driving it
+    // (wheel/trackpad + touch) so the page genuinely holds still for a
+    // beat instead of just snapping back after drifting further.
+    function blockIfLocked(e) {
+      if (pauseRef.current.locked) {
+        e.preventDefault();
+      }
+    }
+
     applyHeroVh();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
+    window.addEventListener('wheel', blockIfLocked, { passive: false });
+    window.addEventListener('touchmove', blockIfLocked, { passive: false });
     update();
+    const pauseState = pauseRef.current;
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('wheel', blockIfLocked);
+      window.removeEventListener('touchmove', blockIfLocked);
+      clearTimeout(pauseState.timer);
+      document.documentElement.style.overflowY = '';
     };
   }, []);
 
