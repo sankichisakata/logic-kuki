@@ -33,7 +33,7 @@ const HERO_VH_MOBILE = 320;
 // there holds the fully-visible text still for a beat instead of letting
 // the user blow past it mid-fade.
 const PAUSE_POINTS = [0.42, 0.76];
-const PAUSE_MS = 260;
+const PAUSE_MS = 110;
 
 export default function Hero() {
   const sectionRef = useRef(null);
