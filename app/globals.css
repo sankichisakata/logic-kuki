@@ -222,6 +222,16 @@ a {
   color: #ffffff;
 }
 
+.hero-copy-line {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 4.2vw, 46px);
+  line-height: 1.5;
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  max-width: 720px;
+}
+
 .hero-scrollcue {
   position: absolute;
   bottom: 38px;

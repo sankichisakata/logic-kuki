@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import WarehouseDots, { warehouseDotsCamera } from './demo/WarehouseDots';
 
 function lerp(a, b, t) {
   return a + (b - a) * t;
@@ -13,21 +11,31 @@ function clamp(v, min, max) {
 function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
+function rangeProgress(v, start, end) {
+  if (end === start) return v >= end ? 1 : 0;
+  return clamp((v - start) / (end - start), 0, 1);
+}
+function fadeWindow(p, inStart, inEnd, outStart, outEnd) {
+  const fadeIn = rangeProgress(p, inStart, inEnd);
+  const fadeOut = 1 - rangeProgress(p, outStart, outEnd);
+  return Math.min(fadeIn, fadeOut);
+}
 
 // Hero occupies this many viewport-heights of scroll distance before it
-// releases — long enough that the push-in + 3D reveal reads as a
-// deliberate, slow move rather than a quick flourish. Shorter on mobile
-// so the same beats don't demand an excessive amount of thumb-scrolling.
+// releases — long enough for three copy beats plus the photo's push-in
+// to read as a deliberate, slow move. Shorter on mobile so the same
+// beats don't demand an excessive amount of thumb-scrolling.
 const HERO_VH_DESKTOP = 460;
-const HERO_VH_MOBILE = 300;
+const HERO_VH_MOBILE = 320;
 
 export default function Hero() {
   const sectionRef = useRef(null);
   const photoRef = useRef(null);
   const bracketsRef = useRef(null);
-  const copyRef = useRef(null);
+  const copy1Ref = useRef(null);
+  const copy2Ref = useRef(null);
+  const copy3Ref = useRef(null);
   const cueRef = useRef(null);
-  const scrollRef = useRef(0);
   const [heroVh, setHeroVh] = useState(HERO_VH_DESKTOP);
 
   useEffect(() => {
@@ -45,33 +53,42 @@ export default function Hero() {
       const top = section.offsetTop;
       const scrollable = section.offsetHeight - window.innerHeight;
       const p = scrollable > 0 ? clamp((scrollY - top) / scrollable, 0, 1) : 0;
-      scrollRef.current = p;
 
       const e = easeOutCubic(p);
 
       if (photoRef.current) {
         // The photo starts as a slightly pulled-back establishing shot
-        // (a sliver of the 3D scene visible at the edges, corner brackets
-        // framing it like a viewfinder finding the subject) and pushes
-        // into a full-bleed close-up ("アップ") as the user scrolls —
-        // ending the hero on the real building rather than the abstract
-        // data underneath it.
-        const scale = lerp(0.94, 1.62, e);
+        // and pushes gently toward a close-up ("アップ") as the user
+        // scrolls — but the source photo is a modest 1090x614, so the
+        // zoom is kept mild to avoid the upscale turning visibly soft.
+        const scale = lerp(0.94, 1.2, e);
         const radius = lerp(14, 0, e);
         photoRef.current.style.transform = `scale(${scale})`;
         photoRef.current.style.borderRadius = `${radius}px`;
-        photoRef.current.style.opacity = String(lerp(0.97, 1, e));
       }
       if (bracketsRef.current) {
         // Corner marks appear early while the shot is still wide (framing
-        // the subject) and fade out as the camera pushes into the close-up.
+        // the subject) and fade out as the camera eases toward the close-up.
         const bracketFade = clamp(p / 0.18, 0, 1) * (1 - clamp((p - 0.32) / 0.18, 0, 1));
         bracketsRef.current.style.opacity = String(bracketFade);
       }
-      if (copyRef.current) {
-        const fade = 1 - clamp(p / 0.18, 0, 1);
-        copyRef.current.style.opacity = String(fade);
-        copyRef.current.style.transform = `translateY(${-p * 60}px)`;
+
+      // Three copy beats crossfade in sequence as the photo journeys from
+      // wide shot to close-up, so there's always something to read.
+      if (copy1Ref.current) {
+        const op = fadeWindow(p, -1, 0, 0.22, 0.3);
+        copy1Ref.current.style.opacity = String(op);
+        copy1Ref.current.style.transform = `translateY(${-p * 40}px)`;
+      }
+      if (copy2Ref.current) {
+        const op = fadeWindow(p, 0.34, 0.42, 0.56, 0.64);
+        copy2Ref.current.style.opacity = String(op);
+        copy2Ref.current.style.transform = `translateY(${(0.48 - p) * 40}px)`;
+      }
+      if (copy3Ref.current) {
+        const op = fadeWindow(p, 0.68, 0.76, 1.5, 1.6);
+        copy3Ref.current.style.opacity = String(op);
+        copy3Ref.current.style.transform = `translateY(${(0.82 - p) * 40}px)`;
       }
       if (cueRef.current) {
         cueRef.current.style.opacity = String(1 - clamp(p / 0.05, 0, 1));
@@ -103,13 +120,6 @@ export default function Hero() {
   return (
     <section ref={sectionRef} className="hero-scroll" style={{ height: `${heroVh}vh` }}>
       <div className="hero-sticky">
-        <div className="hero-canvas">
-          <Canvas camera={warehouseDotsCamera} dpr={[1, 2]}>
-            <ambientLight intensity={0.6} />
-            <WarehouseDots scrollRef={scrollRef} />
-          </Canvas>
-        </div>
-
         <div className="hero-photo-frame">
           <div ref={photoRef} className="hero-photo">
             <img src="/assets/processed/hero_aerial.webp" alt="久喜LOGIC 外観" />
@@ -123,7 +133,7 @@ export default function Hero() {
           <span />
         </div>
 
-        <div ref={copyRef} className="hero-copy">
+        <div ref={copy1Ref} className="hero-copy">
           <div className="hero-eyebrow">埼玉県久喜市 ／ 物流施設</div>
           <h1 className="hero-title">久喜LOGIC</h1>
           <p className="hero-sub">梁下5.5m、無柱の倉庫棟3,590坪。首都圏と東北をつなぐ新しい物流拠点が、久喜に竣工します。</p>
@@ -132,6 +142,24 @@ export default function Hero() {
             <span><b>構造</b> S造 地上2階</span>
             <span><b>竣工前内覧会</b> 受付中</span>
           </div>
+        </div>
+
+        <div ref={copy2Ref} className="hero-copy" style={{ opacity: 0 }}>
+          <div className="hero-eyebrow">FACILITY</div>
+          <p className="hero-copy-line">
+            梁下5.5m、床荷重1.5t/㎡。
+            <br />
+            荷を止めない、無柱の倉庫。
+          </p>
+        </div>
+
+        <div ref={copy3Ref} className="hero-copy" style={{ opacity: 0 }}>
+          <div className="hero-eyebrow">PRE-COMPLETION VIEWING</div>
+          <p className="hero-copy-line">
+            竣工前内覧会、受付中。
+            <br />
+            今だから見られる、無柱の広さを。
+          </p>
         </div>
 
         <div ref={cueRef} className="hero-scrollcue">
