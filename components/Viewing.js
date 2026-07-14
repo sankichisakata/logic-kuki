@@ -10,7 +10,7 @@ export default function Viewing() {
       <div className="wrap">
         <div className="eyebrow" data-reveal>竣工前内覧会</div>
         <h2 className="section-title" data-reveal>竣工前内覧会 開催</h2>
-        <p className="section-intro" data-reveal>現地の無柱空間・梁下有効高を、竣工前の今だからこそ体感いただけます。下記日程のほか、ご希望に合わせて内覧可能です。</p>
+        <p className="section-intro" data-reveal>竣工前の今だから見られる、無柱空間を体感。日程外もご相談ください。</p>
 
         <div className="dates-grid">
           {DATES.map((d, i) => (
@@ -26,9 +26,7 @@ export default function Viewing() {
         <div className="apply-panel" data-reveal>
           <div>
             <h3>お申込み方法</h3>
-            <p className="steps">
-              前日までに、貴社名・参加者名・人数・希望時間を、メールまたはお電話にて弊社担当者へお知らせください。竣工前のため、現場の状況により内覧時間を調整させていただく場合がございます。
-            </p>
+            <p className="steps">前日までに、会社名・参加人数・希望時間をメールまたはお電話でご連絡ください。</p>
           </div>
           <div className="contact-box">
             <div className="who">担当</div>

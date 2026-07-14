@@ -888,9 +888,6 @@ h2.section-title {
 .area-point {
   padding: 24px 0;
   border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 18px;
 }
 
 .area-point:first-child {
@@ -899,22 +896,22 @@ h2.section-title {
 
 .area-point .pn {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   color: var(--accent);
-  padding-top: 2px;
 }
 
 .area-point .pt {
+  margin-top: 8px;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 17px;
 }
 
 .area-point .pd {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 14px;
   color: var(--ink-dim);
-  line-height: 1.75;
 }
 
 /* ---------- Interior gallery ---------- */

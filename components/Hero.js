@@ -196,7 +196,7 @@ export default function Hero() {
         <div ref={copy1Ref} className="hero-copy">
           <div className="hero-eyebrow">埼玉県久喜市 ／ 物流施設</div>
           <h1 className="hero-title">久喜LOGIC</h1>
-          <p className="hero-sub">梁下5.5m、無柱の倉庫棟3,590坪。首都圏と東北をつなぐ新しい物流拠点が、久喜に竣工します。</p>
+          <p className="hero-sub">梁下5.5m、無柱の倉庫棟3,590坪が、久喜に竣工します。</p>
           <div className="hero-meta">
             <span><b>延床</b> 7,078.67㎡</span>
             <span><b>構造</b> S造 地上2階</span>

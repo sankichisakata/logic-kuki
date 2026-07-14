@@ -10,7 +10,7 @@ export default function Gallery() {
       <div className="wrap">
         <div className="eyebrow" data-reveal>内観</div>
         <h2 className="section-title" data-reveal>内観イメージ</h2>
-        <p className="section-intro" data-reveal>事務所棟のエントランスからオフィスまで、働く場としての快適性にもこだわりました。</p>
+        <p className="section-intro" data-reveal>働く場としての快適性にもこだわりました。</p>
         <div className="gallery">
           {IMAGES.map((img, i) => (
             <div className="gal-card" key={img.num} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>

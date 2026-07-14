@@ -13,7 +13,7 @@ export default function Access() {
         <div className="access-grid">
           <div>
             <p className="section-intro" style={{ maxWidth: '100%' }} data-reveal>
-              久喜市は埼玉県北東部、首都圏に近い立地と豊かな自然環境を併せ持つ地域です。東北自動車道や圏央道のインターチェンジが近接し、鉄道による都内・東北方面へのアクセスも良好。広域的な物流ネットワークを構築しやすい、配送・流通拠点として高い利便性を持つ土地です。
+              東北自動車道・圏央道に近接。広域配送に強い立地です。
             </p>
             <div className="access-list">
               {ACCESS_ITEMS.map((a, i) => (

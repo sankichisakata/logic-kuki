@@ -1,23 +1,18 @@
 const POINTS = [
   {
-    n: '01',
-    title: 'マイカー通勤も無理がない',
-    desc: '敷地内に約40台（乗用車相当）の駐車場を確保。国道125号に直接面しているため、車での出勤ルートが分かりやすく、渋滞の少ない幹線道路からそのまま敷地に入れます。',
+    n: '何がある',
+    title: '物流・製造業の会社、元香取神社',
+    desc: '商業施設は少ない、静かなエリアです。',
   },
   {
-    n: '02',
-    title: '最寄り駅からもアクセス可能',
-    desc: 'JR東北本線（宇都宮線）「栗橋駅」まで約2.2km。電車通勤のスタッフとマイカー通勤のスタッフ、どちらの働き方にも対応できる立地です。',
+    n: 'どのくらい',
+    title: '加須IC 3.9km／栗橋駅 2.2km',
+    desc: '駐車場は乗用車約40台分。',
   },
   {
-    n: '03',
-    title: '物流・製造業が集まるエリア',
-    desc: '周辺には丸山運輸倉庫（株）、KOMINE工業（株）佐間工場、セイコー産業（株）mic埼玉事業所など、同業種・関連業種の事業所が集積。荷主・協力会社との連携が取りやすいエリアです。',
-  },
-  {
-    n: '04',
-    title: '静かで落ち着いた環境',
-    desc: '敷地南には元香取神社。市街化調整区域に位置し、周囲は農地と工業地が混在する落ち着いたエリアで、休憩時間も静かに過ごせます。',
+    n: 'どんな場所',
+    title: '市街化調整区域',
+    desc: '工業地と農地が混在する、落ち着いた環境。',
   },
 ];
 
@@ -27,7 +22,7 @@ export default function AreaGuide() {
       <div className="wrap">
         <div className="eyebrow" data-reveal>周辺エリア</div>
         <h2 className="section-title" data-reveal>はたらく人の目線で見る、立地条件</h2>
-        <p className="section-intro" data-reveal>毎日通う場所だからこそ、通勤のしやすさや周辺の環境も大切な条件です。地図で位置関係を確認いただけます。</p>
+        <p className="section-intro" data-reveal>通勤のしやすさと、周辺環境をひと目で。</p>
         <div className="area-grid">
           <div className="area-map" data-reveal>
             <iframe
@@ -42,10 +37,8 @@ export default function AreaGuide() {
             {POINTS.map((p, i) => (
               <div className="area-point" key={p.n} data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
                 <div className="pn">{p.n}</div>
-                <div>
-                  <div className="pt">{p.title}</div>
-                  <div className="pd">{p.desc}</div>
-                </div>
+                <div className="pt">{p.title}</div>
+                <div className="pd">{p.desc}</div>
               </div>
             ))}
           </div>

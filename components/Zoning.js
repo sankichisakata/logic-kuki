@@ -40,9 +40,7 @@ export default function Zoning() {
       <div className="wrap">
         <div className="eyebrow" data-reveal>区画と賃料</div>
         <h2 className="section-title" data-reveal>区画プラン</h2>
-        <p className="section-intro" data-reveal>
-          倉庫棟は西区画（A・C）・東区画（B・D）の2区画。事務所棟を含め、用途に合わせた面積で募集しています（賃料・共益費は別途消費税）。
-        </p>
+        <p className="section-intro" data-reveal>倉庫棟2区画と事務所棟。面積は用途に合わせて選べます（賃料・共益費は別途消費税）。</p>
         <div className="zoning-grid">
           {ZONES.map((z, i) => (
             <div className="zone-card" key={z.name} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>
