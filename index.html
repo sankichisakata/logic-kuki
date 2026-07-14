@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>久喜LOGIC | 埼玉県久喜市 竣工前内覧会受付中</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg: #121316;
+    --bg-panel: #191b20;
+    --bg-panel-2: #1f222a;
+    --ink: #F3F0E8;
+    --ink-dim: #9BA0AC;
+    --ink-faint: #5C616D;
+    --accent: #FF7A29;
+    --accent-dim: #7a4222;
+    --navy: #262E42;
+    --line: rgba(243,240,232,0.12);
+    --line-strong: rgba(243,240,232,0.22);
+    --font-display: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+    --font-body: 'Noto Sans JP', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+  ::selection{background:var(--accent); color:#141414;}
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px;
+    transition:background .4s ease, padding .4s ease, border-color .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  .nav.is-scrolled{
+    background:rgba(18,19,22,0.86);
+    backdrop-filter:blur(10px);
+    padding:14px 32px;
+    border-bottom:1px solid var(--line);
+  }
+  .nav-logo{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:18px;
+    letter-spacing:.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo .dot{width:7px; height:7px; border-radius:50%; background:var(--accent); display:inline-block;}
+  .nav-cta{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.05em;
+    border:1px solid var(--line-strong);
+    padding:9px 18px;
+    border-radius:999px;
+    transition:border-color .25s ease, background .25s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{border-color:var(--accent); background:rgba(255,122,41,0.08);}
+
+  /* ---------- Progress rail (signature element) ---------- */
+  .rail{
+    position:fixed; left:18px; top:50%; transform:translateY(-50%);
+    z-index:150;
+    height:34vh; width:2px;
+    background:var(--line);
+    display:none;
+  }
+  @media (min-width:860px){ .rail{display:block;} }
+  .rail-fill{
+    position:absolute; left:0; top:0; width:100%;
+    background:var(--accent);
+    height:0%;
+    transition:height .05s linear;
+  }
+  .rail-label{
+    position:absolute; left:14px; top:0;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.12em;
+    color:var(--ink-faint);
+    writing-mode:vertical-rl;
+    white-space:nowrap;
+  }
+
+  /* ---------- Hero scroll sequence ---------- */
+  .hero-scroll{
+    position:relative;
+    height:340vh;
+  }
+  .hero-sticky{
+    position:sticky; top:0; left:0;
+    height:100vh; width:100%;
+    overflow:hidden;
+    background:#0c0d0f;
+  }
+  .hero-layer{
+    position:absolute; inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    will-change:opacity, transform;
+  }
+  .hero-layer::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,11,13,.35) 0%, rgba(10,11,13,.25) 45%, rgba(10,11,13,.82) 100%);
+  }
+  #layer-1{ background-image:url('assets/processed/hero_aerial.jpg'); opacity:1; }
+  #layer-2{ background-image:url('assets/processed/facade_entry.jpg'); }
+  #layer-3{ background-image:url('assets/processed/p13_01_670x467_crop.jpg'); }
+
+  .hero-copy{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:0 24px;
+    z-index:5;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px; letter-spacing:.22em;
+    color:var(--accent);
+    margin-bottom:22px;
+  }
+  .hero-title{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(52px, 11vw, 138px);
+    line-height:0.95;
+    letter-spacing:.01em;
+    color:var(--ink);
+  }
+  .hero-sub{
+    margin-top:26px;
+    font-size:clamp(14px,1.6vw,18px);
+    color:var(--ink-dim);
+    max-width:560px;
+    font-weight:500;
+  }
+  .hero-meta{
+    margin-top:38px;
+    display:flex; gap:28px; flex-wrap:wrap; justify-content:center;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--ink-dim);
+    letter-spacing:.04em;
+    text-shadow:0 2px 10px rgba(0,0,0,.7);
+  }
+  .hero-meta b{color:var(--ink);}
+  .hero-sub{ text-shadow:0 2px 14px rgba(0,0,0,.6); }
+  .hero-title{ text-shadow:0 4px 24px rgba(0,0,0,.5); }
+  .hero-scrollcue{
+    position:absolute; bottom:38px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.2em;
+    color:var(--ink-faint);
+    z-index:5;
+    transition:opacity .3s ease;
+  }
+  .hero-scrollcue .line{
+    width:1px; height:40px; background:linear-gradient(180deg, var(--accent), transparent);
+    animation:cue 1.8s ease-in-out infinite;
+  }
+  @keyframes cue{
+    0%{ transform:scaleY(.3); transform-origin:top; opacity:.4; }
+    50%{ transform:scaleY(1); transform-origin:top; opacity:1; }
+    100%{ transform:scaleY(.3); transform-origin:top; opacity:.4; }
+  }
+
+  /* ---------- Section shell ---------- */
+  section{ position:relative; }
+  .section-pad{ padding:130px 0; }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px; letter-spacing:.2em;
+    color:var(--accent);
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:""; width:26px; height:1px; background:var(--accent);
+  }
+  h2.section-title{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(32px, 4.4vw, 54px);
+    line-height:1.15;
+    letter-spacing:.01em;
+  }
+  .section-intro{
+    color:var(--ink-dim);
+    max-width:620px;
+    margin-top:22px;
+    font-size:16px;
+  }
+
+  /* ---------- Statement ---------- */
+  .statement{
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .statement .wrap{ padding:150px 32px; }
+  .statement p{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(24px, 3.6vw, 44px);
+    line-height:1.5;
+    letter-spacing:.005em;
+  }
+  .statement p .accent{ color:var(--accent); }
+  .statement .stat-row{
+    margin-top:64px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+    gap:30px;
+    border-top:1px solid var(--line);
+    padding-top:36px;
+  }
+  .stat{ }
+  .stat .num{
+    font-family:var(--font-mono); font-weight:700;
+    font-size:clamp(22px,2.6vw,32px);
+    color:var(--ink);
+  }
+  .stat .num span{ font-size:14px; color:var(--ink-faint); margin-left:4px; }
+  .stat .label{ margin-top:8px; font-size:13px; color:var(--ink-faint); letter-spacing:.02em; }
+
+  /* ---------- Spec grid ---------- */
+  .spec-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1px;
+    background:var(--line);
+    margin-top:60px;
+    border:1px solid var(--line);
+  }
+  @media (min-width:760px){
+    .spec-grid{ grid-template-columns:repeat(3, 1fr); }
+  }
+  .spec-card{
+    background:var(--bg-panel);
+    padding:34px 28px;
+    transition:background .3s ease;
+  }
+  .spec-card:hover{ background:var(--bg-panel-2); }
+  .spec-card .icon{
+    font-family:var(--font-mono); color:var(--accent); font-size:11px; letter-spacing:.1em;
+  }
+  .spec-card .value{
+    margin-top:16px;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:30px;
+    color:var(--ink);
+  }
+  .spec-card .value small{ font-size:14px; color:var(--ink-faint); font-weight:500; }
+  .spec-card .desc{
+    margin-top:10px; font-size:13.5px; color:var(--ink-dim);
+  }
+
+  /* ---------- Zoning ---------- */
+  .zoning-grid{
+    margin-top:56px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+    gap:24px;
+  }
+  .zone-card{
+    border:1px solid var(--line);
+    background:var(--bg-panel);
+    padding:32px;
+  }
+  .zone-card .zone-head{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+    padding-bottom:20px; margin-bottom:20px;
+    border-bottom:1px solid var(--line);
+  }
+  .zone-card .zone-name{ font-family:var(--font-display); font-weight:700; font-size:17px; line-height:1.4; }
+  .zone-card .zone-tag{ font-family:var(--font-mono); font-size:11px; color:var(--accent); white-space:nowrap; margin-top:3px; }
+  .zone-row{ display:flex; justify-content:space-between; font-size:14px; padding:9px 0; color:var(--ink-dim); border-bottom:1px dashed var(--line); }
+  .zone-row:last-child{ border-bottom:none; }
+  .zone-row b{ color:var(--ink); font-family:var(--font-mono); font-weight:500; }
+  .zone-rent{
+    margin-top:22px; padding-top:20px; border-top:1px solid var(--line);
+    display:flex; align-items:baseline; justify-content:space-between;
+  }
+  .zone-rent .label{ font-size:13px; color:var(--ink-faint); }
+  .zone-rent .price{ font-family:var(--font-mono); font-weight:700; font-size:24px; color:var(--accent); }
+  .zone-rent .price small{ font-size:12px; color:var(--ink-faint); font-weight:400;}
+
+  /* ---------- Access ---------- */
+  .access{ background:var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .access-grid{
+    margin-top:50px;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center;
+  }
+  @media (max-width:860px){ .access-grid{ grid-template-columns:1fr; gap:40px; } }
+  .access-list{ margin-top:30px; display:flex; flex-direction:column; gap:0; }
+  .access-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0; border-bottom:1px solid var(--line);
+  }
+  .access-item:first-child{ border-top:1px solid var(--line); }
+  .access-item .name{ font-size:15px; color:var(--ink); }
+  .access-item .name small{ display:block; color:var(--ink-faint); font-size:12px; margin-top:3px; }
+  .access-item .dist{ font-family:var(--font-mono); font-weight:700; font-size:20px; color:var(--accent); }
+  .access-photo{
+    position:relative; border:1px solid var(--line-strong);
+    overflow:hidden; aspect-ratio:4/3;
+  }
+  .access-photo img{ width:100%; height:100%; object-fit:cover; filter:saturate(0.9) contrast(1.05); }
+  .access-photo .cap{
+    position:absolute; left:16px; bottom:16px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
+    background:rgba(10,11,13,.6); padding:6px 12px; color:var(--ink-dim);
+  }
+
+  /* ---------- Area / working environment ---------- */
+  .area{ background:var(--bg); }
+  .area-grid{
+    margin-top:56px;
+    display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;
+  }
+  @media (max-width:860px){ .area-grid{ grid-template-columns:1fr; gap:36px; } }
+  .area-map{
+    position:relative;
+    border:1px solid var(--line-strong);
+    aspect-ratio:1/1;
+    overflow:hidden;
+    background:var(--bg-panel);
+  }
+  .area-map iframe{ width:100%; height:100%; border:0; filter:grayscale(.15) contrast(1.05); }
+  .area-map .cap{
+    position:absolute; right:0; top:0;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
+    background:rgba(10,11,13,.78); padding:8px 14px; color:var(--ink-dim);
+    pointer-events:none;
+  }
+  .area-points{ display:flex; flex-direction:column; }
+  .area-point{
+    padding:24px 0; border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:40px 1fr; gap:18px;
+  }
+  .area-point:first-child{ padding-top:0; }
+  .area-point .pn{ font-family:var(--font-mono); font-size:13px; color:var(--accent); padding-top:2px; }
+  .area-point .pt{ font-family:var(--font-display); font-weight:700; font-size:17px; }
+  .area-point .pd{ margin-top:8px; font-size:14px; color:var(--ink-dim); line-height:1.75; }
+
+  /* ---------- Interior gallery ---------- */
+  .gallery{
+    margin-top:56px;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
+  }
+  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
+  .gal-card{
+    position:relative; overflow:hidden; aspect-ratio:3/4;
+    border:1px solid var(--line);
+  }
+  .gal-card img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .7s cubic-bezier(.2,.7,.2,1), filter .7s ease;
+    filter:grayscale(.15) brightness(.92);
+  }
+  .gal-card:hover img{ transform:scale(1.06); filter:grayscale(0) brightness(1); }
+  .gal-card .gal-label{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:20px;
+    background:linear-gradient(180deg, transparent, rgba(8,9,10,.9));
+  }
+  .gal-card .gal-label .num{ font-family:var(--font-mono); font-size:11px; color:var(--accent); }
+  .gal-card .gal-label .name{ font-family:var(--font-display); font-weight:700; font-size:18px; margin-top:4px; }
+
+  /* ---------- Viewing / CTA ---------- */
+  .viewing{ background:var(--bg); border-top:1px solid var(--line); }
+  .dates-grid{
+    margin-top:52px;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
+  }
+  @media (max-width:760px){ .dates-grid{ grid-template-columns:1fr; } }
+  .date-card{
+    border:1px solid var(--line-strong);
+    padding:34px 26px;
+    text-align:center;
+    background:var(--bg-panel);
+    transition:border-color .3s ease, transform .3s ease;
+  }
+  .date-card:hover{ border-color:var(--accent); transform:translateY(-4px); }
+  .date-card .dow{ font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); letter-spacing:.1em; }
+  .date-card .md{ font-family:var(--font-display); font-weight:900; font-size:40px; margin-top:10px; }
+  .date-card .time{ margin-top:10px; font-family:var(--font-mono); font-size:13px; color:var(--accent); }
+  .viewing-note{
+    margin-top:26px; font-size:13.5px; color:var(--ink-faint);
+    border-left:2px solid var(--line-strong); padding-left:16px;
+  }
+  .apply-panel{
+    margin-top:70px;
+    border:1px solid var(--line);
+    background:var(--bg-panel);
+    padding:44px;
+    display:grid; grid-template-columns:1.3fr 1fr; gap:40px;
+  }
+  @media (max-width:760px){ .apply-panel{ grid-template-columns:1fr; padding:30px; } }
+  .apply-panel h3{ font-family:var(--font-display); font-weight:700; font-size:22px; }
+  .apply-panel .steps{ margin-top:18px; color:var(--ink-dim); font-size:14.5px; }
+  .contact-box{ border-left:1px solid var(--line); padding-left:40px; }
+  @media (max-width:760px){ .contact-box{ border-left:none; border-top:1px solid var(--line); padding-left:0; padding-top:30px; } }
+  .contact-box .who{ font-size:13px; color:var(--ink-faint); }
+  .contact-box .person{ font-family:var(--font-display); font-weight:700; font-size:20px; margin-top:6px; }
+  .contact-links{ margin-top:20px; display:flex; flex-direction:column; gap:10px; }
+  .contact-links a{
+    font-family:var(--font-mono); font-size:15px;
+    display:flex; align-items:center; gap:10px;
+    padding:12px 18px; border:1px solid var(--line-strong);
+    transition:border-color .25s ease, background .25s ease;
+  }
+  .contact-links a:hover{ border-color:var(--accent); background:rgba(255,122,41,.08); }
+  .contact-links a.primary{ background:var(--accent); color:#181818; border-color:var(--accent); font-weight:700; }
+  .contact-links a.primary:hover{ background:#ff8c47; }
+
+  /* ---------- Footer ---------- */
+  footer{ border-top:1px solid var(--line); padding:60px 0 40px; background:var(--bg); }
+  .footer-grid{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px;
+    font-size:12.5px; color:var(--ink-faint);
+  }
+  .footer-grid .brand{ font-family:var(--font-display); font-weight:900; color:var(--ink); font-size:16px; }
+  .footer-grid .legal{ line-height:1.9; }
+  .footer-bottom{
+    margin-top:40px; padding-top:24px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--ink-faint); text-align:center;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .hero-scrollcue .line{ animation:none; }
+    .gal-card img{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="rail"><div class="rail-fill" id="railFill"></div><div class="rail-label">SCROLL</div></div>
+
+  <nav class="nav" id="nav">
+    <div class="nav-logo"><span class="dot"></span>久喜LOGIC</div>
+    <a class="nav-cta" href="#viewing">内覧会に申し込む →</a>
+  </nav>
+
+  <!-- HERO: scroll-driven penetration sequence -->
+  <section class="hero-scroll" id="heroScroll">
+    <div class="hero-sticky">
+      <div class="hero-layer" id="layer-1"></div>
+      <div class="hero-layer" id="layer-2"></div>
+      <div class="hero-layer" id="layer-3"></div>
+      <div class="hero-copy" id="heroCopy">
+        <div class="hero-eyebrow">SAITAMA KUKI &nbsp;/&nbsp; LOGISTICS FACILITY</div>
+        <h1 class="hero-title">久喜LOGIC</h1>
+        <p class="hero-sub">梁下5.5m、無柱の倉庫棟3,590坪。首都圏と東北をつなぐ新しい物流拠点が、久喜に竣工します。</p>
+        <div class="hero-meta">
+          <span><b>延床</b> 7,078.67㎡</span>
+          <span><b>構造</b> S造 地上2階</span>
+          <span><b>竣工前内覧会</b> 受付中</span>
+        </div>
+      </div>
+      <div class="hero-scrollcue"><span>SCROLL</span><span class="line"></span></div>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement">
+    <div class="wrap">
+      <p>東北自動車道「加須IC」まで<span class="accent">3.9km</span>。<br/>
+      国道125号に面し、荷の流れを止めない立地に、<br/>
+      無柱空間と大型バースを備えた倉庫を建てました。</p>
+      <div class="stat-row">
+        <div class="stat"><div class="num">5,846.82<span>㎡</span></div><div class="label">敷地面積（1,768.66坪）</div></div>
+        <div class="stat"><div class="num">7,078.67<span>㎡</span></div><div class="label">延床面積（2,141.30坪）</div></div>
+        <div class="stat"><div class="num">5.5<span>m以上</span></div><div class="label">梁下有効高</div></div>
+        <div class="stat"><div class="num">12<span>台</span></div><div class="label">トラックバース</div></div>
+        <div class="stat"><div class="num">約40<span>台</span></div><div class="label">駐車場（乗用車相当）</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPEC -->
+  <section class="section-pad" id="spec">
+    <div class="wrap">
+      <div class="eyebrow">FACILITY SPEC</div>
+      <h2 class="section-title">倉庫スペック</h2>
+      <p class="section-intro">S造・地上2階、無柱空間を活かした保管・配送拠点。床荷重1.5t/㎡、EV両面開きなど、稼働を止めない設備を備えています。</p>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="icon">CLEARANCE</div>
+          <div class="value">5.5<small>m以上</small></div>
+          <div class="desc">梁下有効高。大型車両・高積み保管に対応。</div>
+        </div>
+        <div class="spec-card">
+          <div class="icon">FLOOR LOAD</div>
+          <div class="value">1.5<small>t/㎡</small></div>
+          <div class="desc">床荷重。重量物の保管にも余裕を持たせています。</div>
+        </div>
+        <div class="spec-card">
+          <div class="icon">TRUCK BERTH</div>
+          <div class="value">12<small>台</small></div>
+          <div class="desc">同時荷役が可能なトラックバースを配置。</div>
+        </div>
+        <div class="spec-card">
+          <div class="icon">PARKING</div>
+          <div class="value">約40<small>台</small></div>
+          <div class="desc">乗用車約40台相当、約240坪の駐車場を確保。</div>
+        </div>
+        <div class="spec-card">
+          <div class="icon">STRUCTURE</div>
+          <div class="value">S造<small>地上2階</small></div>
+          <div class="desc">用途地域：市街化調整区域（都計法34条12号指定）。</div>
+        </div>
+        <div class="spec-card">
+          <div class="icon">ELEVATOR</div>
+          <div class="value">EV<small>両面開き</small></div>
+          <div class="desc">1階・2階間の搬送動線をスムーズに。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONING -->
+  <section class="section-pad" id="zoning" style="background:var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="eyebrow">ZONING &amp; RENT</div>
+      <h2 class="section-title">区画プラン</h2>
+      <p class="section-intro">倉庫棟は西区画（A・C）・東区画（B・D）の2区画。事務所棟を含め、用途に合わせた面積で募集しています（賃料・共益費は別途消費税）。</p>
+      <div class="zoning-grid">
+        <div class="zone-card">
+          <div class="zone-head"><span class="zone-name">倉庫棟　西区画（A・C）</span><span class="zone-tag">WAREHOUSE / WEST</span></div>
+          <div class="zone-row"><span>倉庫1階</span><b>468.80坪</b></div>
+          <div class="zone-row"><span>倉庫2階</span><b>468.80坪</b></div>
+          <div class="zone-row"><span>バース</span><b>131.56坪</b></div>
+          <div class="zone-row"><span>合計</span><b>1,069.16坪</b></div>
+          <div class="zone-rent"><span class="label">賃料</span><span class="price">3,590<small>円 / 坪・共益費応相談</small></span></div>
+        </div>
+        <div class="zone-card">
+          <div class="zone-head"><span class="zone-name">倉庫棟　東区画（B・D）</span><span class="zone-tag">WAREHOUSE / EAST</span></div>
+          <div class="zone-row"><span>倉庫1階</span><b>454.41坪</b></div>
+          <div class="zone-row"><span>倉庫2階</span><b>454.41坪</b></div>
+          <div class="zone-row"><span>バース</span><b>131.56坪</b></div>
+          <div class="zone-row"><span>合計</span><b>974.02坪</b></div>
+          <div class="zone-rent"><span class="label">賃料</span><span class="price">3,590<small>円 / 坪・共益費応相談</small></span></div>
+        </div>
+        <div class="zone-card">
+          <div class="zone-head"><span class="zone-name">事務所棟</span><span class="zone-tag">OFFICE</span></div>
+          <div class="zone-row"><span>事務所1階</span><b>49.06坪</b></div>
+          <div class="zone-row"><span>事務所2階</span><b>49.06坪</b></div>
+          <div class="zone-row"><span>合計</span><b>98.12坪</b></div>
+          <div class="zone-row"><span>&nbsp;</span><b>&nbsp;</b></div>
+          <div class="zone-rent"><span class="label">賃料</span><span class="price">6,700<small>円 / 坪・共益費応相談</small></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCESS -->
+  <section class="section-pad access" id="access">
+    <div class="wrap">
+      <div class="eyebrow">ACCESS</div>
+      <h2 class="section-title">首都圏と東北を結ぶ立地</h2>
+      <div class="access-grid">
+        <div>
+          <p class="section-intro" style="max-width:100%;">
+            久喜市は埼玉県北東部、首都圏に近い立地と豊かな自然環境を併せ持つ地域です。東北自動車道や圏央道のインターチェンジが近接し、鉄道による都内・東北方面へのアクセスも良好。広域的な物流ネットワークを構築しやすい、配送・流通拠点として高い利便性を持つ土地です。
+          </p>
+          <div class="access-list">
+            <div class="access-item"><div class="name">東北自動車道「加須IC」<small>ICから最短ルート</small></div><div class="dist">3.9km</div></div>
+            <div class="access-item"><div class="name">東北自動車道「久喜IC」<small>圏央道方面からのアクセス</small></div><div class="dist">6.9km</div></div>
+            <div class="access-item"><div class="name">JR東北本線「栗橋駅」<small>宇都宮線・徒歩圏の最寄駅</small></div><div class="dist">2.2km</div></div>
+          </div>
+          <div class="viewing-note" style="margin-top:26px;">所在地：埼玉県久喜市高柳2927番1他 ／ 敷地は国道125号（2車線道路）に接道</div>
+        </div>
+        <div class="access-photo">
+          <img src="assets/processed/access_ic.jpg" alt="東北自動車道インターチェンジ 上空俯瞰" />
+          <div class="cap">東北自動車道 インターチェンジ付近</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREA / WORKING ENVIRONMENT -->
+  <section class="section-pad area" id="area">
+    <div class="wrap">
+      <div class="eyebrow">AREA GUIDE</div>
+      <h2 class="section-title">はたらく人の目線で見る、立地条件</h2>
+      <p class="section-intro">毎日通う場所だからこそ、通勤のしやすさや周辺の環境も大切な条件です。地図で位置関係を確認いただけます。</p>
+      <div class="area-grid">
+        <div class="area-map">
+          <iframe
+            src="https://www.google.com/maps?q=%E5%9F%BC%E7%8E%89%E7%9C%8C%E4%B9%85%E5%96%9C%E5%B8%82%E9%AB%98%E6%9F%B32927&z=15&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="久喜LOGIC 所在地マップ"
+          ></iframe>
+          <div class="cap">埼玉県久喜市高柳2927番1他</div>
+        </div>
+        <div class="area-points">
+          <div class="area-point">
+            <div class="pn">01</div>
+            <div>
+              <div class="pt">マイカー通勤も無理がない</div>
+              <div class="pd">敷地内に約40台（乗用車相当）の駐車場を確保。国道125号に直接面しているため、車での出勤ルートが分かりやすく、渋滞の少ない幹線道路からそのまま敷地に入れます。</div>
+            </div>
+          </div>
+          <div class="area-point">
+            <div class="pn">02</div>
+            <div>
+              <div class="pt">最寄り駅からもアクセス可能</div>
+              <div class="pd">JR東北本線（宇都宮線）「栗橋駅」まで約2.2km。電車通勤のスタッフとマイカー通勤のスタッフ、どちらの働き方にも対応できる立地です。</div>
+            </div>
+          </div>
+          <div class="area-point">
+            <div class="pn">03</div>
+            <div>
+              <div class="pt">物流・製造業が集まるエリア</div>
+              <div class="pd">周辺には丸山運輸倉庫（株）、KOMINE工業（株）佐間工場、セイコー産業（株）mic埼玉事業所など、同業種・関連業種の事業所が集積。荷主・協力会社との連携が取りやすいエリアです。</div>
+            </div>
+          </div>
+          <div class="area-point">
+            <div class="pn">04</div>
+            <div>
+              <div class="pt">静かで落ち着いた環境</div>
+              <div class="pd">敷地南には元香取神社。市街化調整区域に位置し、周囲は農地と工業地が混在する落ち着いたエリアで、休憩時間も静かに過ごせます。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section-pad" id="interior">
+    <div class="wrap">
+      <div class="eyebrow">INTERIOR</div>
+      <h2 class="section-title">内観イメージ</h2>
+      <p class="section-intro">事務所棟のエントランスからオフィスまで、働く場としての快適性にもこだわりました。</p>
+      <div class="gallery">
+        <div class="gal-card">
+          <img src="assets/processed/p13_01_670x467_crop.jpg" alt="エントランス 内観イメージ" />
+          <div class="gal-label"><div class="num">01 / ENTRANCE</div><div class="name">エントランス</div></div>
+        </div>
+        <div class="gal-card">
+          <img src="assets/processed/p13_02_514x359_crop.jpg" alt="1Fトイレ 内観イメージ" />
+          <div class="gal-label"><div class="num">02 / RESTROOM</div><div class="name">1Fトイレ</div></div>
+        </div>
+        <div class="gal-card">
+          <img src="assets/processed/p13_00_511x349_crop.jpg" alt="2Fオフィス 内観イメージ" />
+          <div class="gal-label"><div class="num">03 / OFFICE</div><div class="name">2Fオフィス</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEWING CTA -->
+  <section class="section-pad viewing" id="viewing">
+    <div class="wrap">
+      <div class="eyebrow">PRE-COMPLETION VIEWING</div>
+      <h2 class="section-title">竣工前内覧会 開催</h2>
+      <p class="section-intro">現地の無柱空間・梁下有効高を、竣工前の今だからこそ体感いただけます。下記日程のほか、ご希望に合わせて内覧可能です。</p>
+
+      <div class="dates-grid">
+        <div class="date-card"><div class="dow">THU</div><div class="md">7.22</div><div class="time">10:00 - 17:00</div></div>
+        <div class="date-card"><div class="dow">WED</div><div class="md">8.5</div><div class="time">10:00 - 17:00</div></div>
+        <div class="date-card"><div class="dow">TUE</div><div class="md">8.18</div><div class="time">10:00 - 17:00</div></div>
+      </div>
+      <div class="viewing-note">※ 上記以外の日程もご希望に合わせて内覧可能です。</div>
+
+      <div class="apply-panel">
+        <div>
+          <h3>お申込み方法</h3>
+          <p class="steps">前日までに、貴社名・参加者名・人数・希望時間を、メールまたはお電話にて弊社担当者へお知らせください。竣工前のため、現場の状況により内覧時間を調整させていただく場合がございます。</p>
+        </div>
+        <div class="contact-box">
+          <div class="who">担当</div>
+          <div class="person">溝口 源一郎（みぞぐち げんいちろう）</div>
+          <div class="contact-links">
+            <a class="primary" href="tel:08031546483">TEL：080-3154-6483</a>
+            <a href="mailto:gen@all-com.jp">MAIL：gen@all-com.jp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="brand">アライアンスコミュニケーション株式会社</div>
+          <div class="legal" style="margin-top:14px;">
+            〒104-0061 東京都中央区銀座6-13-16 ヒューリック銀座ウォールビル7階<br/>
+            担当　溝口源一郎　TEL 080-3154-6483
+          </div>
+        </div>
+        <div class="legal" style="text-align:right;">
+          宅地建物取引業　東京都知事免許(4)第85897号<br/>
+          第二種金融取引業及び投資助言・代理業　関東財務局長(金商)第1705号
+        </div>
+      </div>
+      <div class="footer-bottom">
+        ※ 資料の内容は概略となります。契約成立の場合、原則として法令に定める基準に従い仲介手数料を申し受けます。賃料・共益費等は別途消費税となります。条件や設備は変更する可能性がありますので、ご契約の詳細は各建物の賃貸借契約書等でご確認ください。資料の内容が現状と異なる場合は、現況優先となります。<br/>
+        © Alliance Communication. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  var nav = document.getElementById('nav');
+  var heroScroll = document.getElementById('heroScroll');
+  var layer1 = document.getElementById('layer-1');
+  var layer2 = document.getElementById('layer-2');
+  var layer3 = document.getElementById('layer-3');
+  var heroCopy = document.getElementById('heroCopy');
+  var heroCue = document.querySelector('.hero-scrollcue');
+  var railFill = document.getElementById('railFill');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  // smoothstep-ish easing for progress within a range
+  function rangeProgress(v, start, end){
+    if(end === start) return v >= end ? 1 : 0;
+    return clamp((v - start) / (end - start), 0, 1);
+  }
+
+  var ticking = false;
+
+  function update(){
+    ticking = false;
+    var scrollY = window.scrollY || window.pageYOffset;
+
+    // Nav background toggle
+    nav.classList.toggle('is-scrolled', scrollY > 40);
+
+    // Overall page scroll progress -> rail
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pageProgress = docHeight > 0 ? clamp(scrollY / docHeight, 0, 1) : 0;
+    if(railFill) railFill.style.height = (pageProgress * 100) + '%';
+
+    if(!reduceMotion){
+      // Hero penetration sequence progress (0..1 across the hero-scroll section)
+      var heroTop = heroScroll.offsetTop;
+      var heroHeight = heroScroll.offsetHeight - window.innerHeight;
+      var p = heroHeight > 0 ? clamp((scrollY - heroTop) / heroHeight, 0, 1) : 0;
+
+      // Each layer fades in over [inStart,inEnd] and fades out over [outStart,outEnd].
+      // Windows are kept non-overlapping so at most two layers cross-fade at once.
+      function fadeWindow(inStart, inEnd, outStart, outEnd){
+        var fadeIn = rangeProgress(p, inStart, inEnd);
+        var fadeOut = 1 - rangeProgress(p, outStart, outEnd);
+        return Math.min(fadeIn, fadeOut);
+      }
+
+      var op1 = fadeWindow(-1, 0, 0.08, 0.24);      // aerial: visible from start, fades out early
+      var op2 = fadeWindow(0.14, 0.26, 0.54, 0.68); // facade: fades in, holds, fades out
+      var op3 = fadeWindow(0.58, 0.74, 1.5, 1.6);   // interior: fades in, stays
+
+      var p1 = rangeProgress(p, 0, 0.30);
+      var p2 = rangeProgress(p, 0.20, 0.66);
+      var p3 = rangeProgress(p, 0.60, 1.0);
+
+      layer1.style.opacity = op1;
+      layer1.style.transform = 'scale(' + lerp(1, 1.14, p1) + ')';
+
+      layer2.style.opacity = op2;
+      layer2.style.transform = 'scale(' + lerp(1.04, 1.2, p2) + ')';
+
+      layer3.style.opacity = op3;
+      layer3.style.transform = 'scale(' + lerp(1.08, 1.24, p3) + ')';
+
+      var copyFade = 1 - rangeProgress(p, 0, 0.16);
+      heroCopy.style.opacity = copyFade;
+      heroCopy.style.transform = 'translateY(' + (-p*70) + 'px)';
+
+      if(heroCue) heroCue.style.opacity = 1 - rangeProgress(p, 0, 0.06);
+    }
+  }
+
+  function onScroll(){
+    if(!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+</body>
+</html>
