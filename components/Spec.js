@@ -11,14 +11,14 @@ export default function Spec() {
   return (
     <section className="section-pad" id="spec">
       <div className="wrap">
-        <div className="eyebrow">施設スペック</div>
-        <h2 className="section-title">倉庫スペック</h2>
-        <p className="section-intro">
+        <div className="eyebrow" data-reveal>施設スペック</div>
+        <h2 className="section-title" data-reveal>倉庫スペック</h2>
+        <p className="section-intro" data-reveal>
           S造・地上2階、無柱空間を活かした保管・配送拠点。床荷重1.5t/㎡、EV両面開きなど、稼働を止めない設備を備えています。
         </p>
         <div className="spec-grid">
-          {SPECS.map((s) => (
-            <div className="spec-card" key={s.icon}>
+          {SPECS.map((s, i) => (
+            <div className="spec-card" key={s.icon} data-reveal style={{ '--reveal-delay': `${i * 60}ms` }}>
               <div className="icon">{s.icon}</div>
               <div className="value">
                 {s.value}

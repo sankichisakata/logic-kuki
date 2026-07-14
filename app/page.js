@@ -1,4 +1,5 @@
 import ScrollChrome from '@/components/ScrollChrome';
+import ScrollReveal from '@/components/ScrollReveal';
 import Hero from '@/components/Hero';
 import Statement from '@/components/Statement';
 import Spec from '@/components/Spec';
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <ScrollChrome />
+      <ScrollReveal />
       <main>
         <Hero />
         <Statement />

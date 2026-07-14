@@ -36,20 +36,16 @@ const ZONES = [
 
 export default function Zoning() {
   return (
-    <section
-      className="section-pad"
-      id="zoning"
-      style={{ background: 'var(--bg-panel)', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}
-    >
+    <section className="section-pad" id="zoning">
       <div className="wrap">
-        <div className="eyebrow">区画と賃料</div>
-        <h2 className="section-title">区画プラン</h2>
-        <p className="section-intro">
+        <div className="eyebrow" data-reveal>区画と賃料</div>
+        <h2 className="section-title" data-reveal>区画プラン</h2>
+        <p className="section-intro" data-reveal>
           倉庫棟は西区画（A・C）・東区画（B・D）の2区画。事務所棟を含め、用途に合わせた面積で募集しています（賃料・共益費は別途消費税）。
         </p>
         <div className="zoning-grid">
-          {ZONES.map((z) => (
-            <div className="zone-card" key={z.name}>
+          {ZONES.map((z, i) => (
+            <div className="zone-card" key={z.name} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>
               <div className="zone-head">
                 <span className="zone-name">{z.name}</span>
                 <span className="zone-tag">{z.tag}</span>

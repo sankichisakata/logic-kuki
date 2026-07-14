@@ -2,13 +2,21 @@
   --bg: #ffffff;
   --bg-panel: #f4f6f9;
   --bg-panel-2: #e9edf3;
+  /* Brighter blue tint bands, alternated between sections so the page
+     doesn't read as flat white — the "地" for each section swaps with
+     the card color sitting on top of it. */
+  --bg-blue: #eaf3fc;
+  --bg-blue-2: #dcebfa;
   --ink: #10151c;
   --ink-dim: #56616f;
   --ink-faint: #8d96a3;
-  --accent: #0b57a4;
+  --accent: #1e7fe0;
+  --accent-strong: #0f66c2;
+  --accent-soft: rgba(30, 127, 224, 0.1);
   --accent-2: #ff7a29;
   --line: rgba(16, 21, 28, 0.09);
   --line-strong: rgba(16, 21, 28, 0.18);
+  --line-on-blue: rgba(16, 43, 77, 0.12);
   --font-display: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
   --font-body: 'Noto Sans JP', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -269,6 +277,27 @@ a {
   }
 }
 
+/* ---------- Scroll reveal ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ---------- Layout shell ---------- */
 .wrap {
   max-width: 1180px;
@@ -392,7 +421,7 @@ h2.section-title {
 
 .nav-cta:hover {
   border-color: var(--accent);
-  background: rgba(11, 87, 164, 0.08);
+  background: var(--accent-soft);
   color: var(--ink);
 }
 
@@ -490,13 +519,17 @@ h2.section-title {
 }
 
 /* ---------- Spec grid ---------- */
+#spec {
+  background: var(--bg-blue);
+}
+
 .spec-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  background: var(--line);
+  background: var(--line-on-blue);
   margin-top: 60px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-on-blue);
 }
 
 @media (min-width: 760px) {
@@ -506,13 +539,14 @@ h2.section-title {
 }
 
 .spec-card {
-  background: var(--bg-panel);
+  background: var(--bg);
   padding: 34px 28px;
   transition: background 0.3s ease;
 }
 
 .spec-card:hover {
-  background: var(--bg-panel-2);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--accent-soft);
 }
 
 .spec-card .icon {
@@ -550,10 +584,19 @@ h2.section-title {
   gap: 24px;
 }
 
+#zoning {
+  background: var(--bg);
+}
+
 .zone-card {
   border: 1px solid var(--line);
-  background: var(--bg-panel);
+  background: var(--bg-blue);
   padding: 32px;
+  transition: background 0.3s ease;
+}
+
+.zone-card:hover {
+  background: var(--bg-blue-2);
 }
 
 .zone-card .zone-head {
@@ -629,9 +672,9 @@ h2.section-title {
 
 /* ---------- Access ---------- */
 .access {
-  background: var(--bg-panel);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  background: var(--bg-blue);
+  border-top: 1px solid var(--line-on-blue);
+  border-bottom: 1px solid var(--line-on-blue);
 }
 
 .access-grid {
@@ -661,11 +704,11 @@ h2.section-title {
   align-items: center;
   justify-content: space-between;
   padding: 18px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-on-blue);
 }
 
 .access-item:first-child {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-on-blue);
 }
 
 .access-item .name {
@@ -798,6 +841,10 @@ h2.section-title {
 }
 
 /* ---------- Interior gallery ---------- */
+#interior {
+  background: var(--bg-blue);
+}
+
 .gallery {
   margin-top: 56px;
   display: grid;
@@ -884,11 +931,12 @@ h2.section-title {
   border: 1px solid var(--line-strong);
   padding: 34px 26px;
   text-align: center;
-  background: var(--bg-panel);
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  background: var(--bg-blue);
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
 }
 
 .date-card:hover {
+  background: var(--bg-blue-2);
   border-color: var(--accent);
   transform: translateY(-4px);
 }
@@ -925,7 +973,7 @@ h2.section-title {
 .apply-panel {
   margin-top: 70px;
   border: 1px solid var(--line);
-  background: var(--bg-panel);
+  background: var(--bg-blue);
   padding: 44px;
   display: grid;
   grid-template-columns: 1.3fr 1fr;
@@ -997,7 +1045,7 @@ h2.section-title {
 
 .contact-links a:hover {
   border-color: var(--accent);
-  background: rgba(11, 87, 164, 0.06);
+  background: var(--accent-soft);
 }
 
 .contact-links a.primary {
@@ -1008,14 +1056,14 @@ h2.section-title {
 }
 
 .contact-links a.primary:hover {
-  background: #0e6bc9;
+  background: var(--accent-strong);
 }
 
 /* ---------- Footer ---------- */
 footer {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-on-blue);
   padding: 60px 0 40px;
-  background: var(--bg);
+  background: var(--bg-blue);
 }
 
 .footer-grid {

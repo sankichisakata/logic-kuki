@@ -8,12 +8,12 @@ export default function Gallery() {
   return (
     <section className="section-pad" id="interior">
       <div className="wrap">
-        <div className="eyebrow">内観</div>
-        <h2 className="section-title">内観イメージ</h2>
-        <p className="section-intro">事務所棟のエントランスからオフィスまで、働く場としての快適性にもこだわりました。</p>
+        <div className="eyebrow" data-reveal>内観</div>
+        <h2 className="section-title" data-reveal>内観イメージ</h2>
+        <p className="section-intro" data-reveal>事務所棟のエントランスからオフィスまで、働く場としての快適性にもこだわりました。</p>
         <div className="gallery">
-          {IMAGES.map((img) => (
-            <div className="gal-card" key={img.num}>
+          {IMAGES.map((img, i) => (
+            <div className="gal-card" key={img.num} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>
               <img src={img.src} alt={img.alt} />
               <div className="gal-label">
                 <div className="num">{img.num}</div>

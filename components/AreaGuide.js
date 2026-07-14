@@ -25,11 +25,11 @@ export default function AreaGuide() {
   return (
     <section className="section-pad area" id="area">
       <div className="wrap">
-        <div className="eyebrow">周辺エリア</div>
-        <h2 className="section-title">はたらく人の目線で見る、立地条件</h2>
-        <p className="section-intro">毎日通う場所だからこそ、通勤のしやすさや周辺の環境も大切な条件です。地図で位置関係を確認いただけます。</p>
+        <div className="eyebrow" data-reveal>周辺エリア</div>
+        <h2 className="section-title" data-reveal>はたらく人の目線で見る、立地条件</h2>
+        <p className="section-intro" data-reveal>毎日通う場所だからこそ、通勤のしやすさや周辺の環境も大切な条件です。地図で位置関係を確認いただけます。</p>
         <div className="area-grid">
-          <div className="area-map">
+          <div className="area-map" data-reveal>
             <iframe
               src="https://www.google.com/maps?q=%E5%9F%BC%E7%8E%89%E7%9C%8C%E4%B9%85%E5%96%9C%E5%B8%82%E9%AB%98%E6%9F%B32927&z=15&output=embed"
               loading="lazy"
@@ -39,8 +39,8 @@ export default function AreaGuide() {
             <div className="cap">埼玉県久喜市高柳2927番1他</div>
           </div>
           <div className="area-points">
-            {POINTS.map((p) => (
-              <div className="area-point" key={p.n}>
+            {POINTS.map((p, i) => (
+              <div className="area-point" key={p.n} data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
                 <div className="pn">{p.n}</div>
                 <div>
                   <div className="pt">{p.title}</div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import WarehouseDots, { warehouseDotsCamera } from './demo/WarehouseDots';
 
@@ -15,9 +15,11 @@ function easeOutCubic(t) {
 }
 
 // Hero occupies this many viewport-heights of scroll distance before it
-// releases — long enough that the pull-back + 3D reveal reads as a
-// deliberate, slow move rather than a quick flourish.
-const HERO_VH = 460;
+// releases — long enough that the push-in + 3D reveal reads as a
+// deliberate, slow move rather than a quick flourish. Shorter on mobile
+// so the same beats don't demand an excessive amount of thumb-scrolling.
+const HERO_VH_DESKTOP = 460;
+const HERO_VH_MOBILE = 300;
 
 export default function Hero() {
   const sectionRef = useRef(null);
@@ -26,9 +28,14 @@ export default function Hero() {
   const copyRef = useRef(null);
   const cueRef = useRef(null);
   const scrollRef = useRef(0);
+  const [heroVh, setHeroVh] = useState(HERO_VH_DESKTOP);
 
   useEffect(() => {
     let ticking = false;
+
+    function applyHeroVh() {
+      setHeroVh(window.innerWidth <= 760 ? HERO_VH_MOBILE : HERO_VH_DESKTOP);
+    }
 
     function update() {
       ticking = false;
@@ -43,19 +50,22 @@ export default function Hero() {
       const e = easeOutCubic(p);
 
       if (photoRef.current) {
-        // The photo starts large (filling / overflowing the frame) and
-        // pulls back into a smaller framed shot as the 3D scene opens up
-        // around it — the "引き" (pull-back) effect.
-        const scale = lerp(1.55, 0.62, e);
-        const radius = lerp(0, 28, e);
+        // The photo starts as a slightly pulled-back establishing shot
+        // (a sliver of the 3D scene visible at the edges, corner brackets
+        // framing it like a viewfinder finding the subject) and pushes
+        // into a full-bleed close-up ("アップ") as the user scrolls —
+        // ending the hero on the real building rather than the abstract
+        // data underneath it.
+        const scale = lerp(0.94, 1.62, e);
+        const radius = lerp(14, 0, e);
         photoRef.current.style.transform = `scale(${scale})`;
         photoRef.current.style.borderRadius = `${radius}px`;
-        photoRef.current.style.opacity = String(lerp(1, 0.94, e));
+        photoRef.current.style.opacity = String(lerp(0.97, 1, e));
       }
       if (bracketsRef.current) {
-        // Corner marks fade in as the pull-back reveals the scene, like a
-        // viewfinder bringing the site into focus.
-        const bracketFade = clamp((p - 0.12) / 0.35, 0, 1) * (1 - clamp((p - 0.85) / 0.15, 0, 1));
+        // Corner marks appear early while the shot is still wide (framing
+        // the subject) and fade out as the camera pushes into the close-up.
+        const bracketFade = clamp(p / 0.18, 0, 1) * (1 - clamp((p - 0.32) / 0.18, 0, 1));
         bracketsRef.current.style.opacity = String(bracketFade);
       }
       if (copyRef.current) {
@@ -75,17 +85,23 @@ export default function Hero() {
       }
     }
 
+    function onResize() {
+      applyHeroVh();
+      onScroll();
+    }
+
+    applyHeroVh();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', onResize);
     update();
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 
   return (
-    <section ref={sectionRef} className="hero-scroll" style={{ height: `${HERO_VH}vh` }}>
+    <section ref={sectionRef} className="hero-scroll" style={{ height: `${heroVh}vh` }}>
       <div className="hero-sticky">
         <div className="hero-canvas">
           <Canvas camera={warehouseDotsCamera} dpr={[1, 2]}>

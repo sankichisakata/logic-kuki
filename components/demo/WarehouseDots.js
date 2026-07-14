@@ -141,7 +141,7 @@ function WarehousePoints() {
         </bufferGeometry>
         <pointsMaterial
           ref={material}
-          color="#0b57a4"
+          color="#1e7fe0"
           size={0.052}
           sizeAttenuation
           transparent

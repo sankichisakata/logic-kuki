@@ -8,22 +8,22 @@ export default function Viewing() {
   return (
     <section className="section-pad viewing" id="viewing">
       <div className="wrap">
-        <div className="eyebrow">竣工前内覧会</div>
-        <h2 className="section-title">竣工前内覧会 開催</h2>
-        <p className="section-intro">現地の無柱空間・梁下有効高を、竣工前の今だからこそ体感いただけます。下記日程のほか、ご希望に合わせて内覧可能です。</p>
+        <div className="eyebrow" data-reveal>竣工前内覧会</div>
+        <h2 className="section-title" data-reveal>竣工前内覧会 開催</h2>
+        <p className="section-intro" data-reveal>現地の無柱空間・梁下有効高を、竣工前の今だからこそ体感いただけます。下記日程のほか、ご希望に合わせて内覧可能です。</p>
 
         <div className="dates-grid">
-          {DATES.map((d) => (
-            <div className="date-card" key={d.md}>
+          {DATES.map((d, i) => (
+            <div className="date-card" key={d.md} data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
               <div className="dow">{d.dow}</div>
               <div className="md">{d.md}</div>
               <div className="time">{d.time}</div>
             </div>
           ))}
         </div>
-        <div className="viewing-note">※ 上記以外の日程もご希望に合わせて内覧可能です。</div>
+        <div className="viewing-note" data-reveal>※ 上記以外の日程もご希望に合わせて内覧可能です。</div>
 
-        <div className="apply-panel">
+        <div className="apply-panel" data-reveal>
           <div>
             <h3>お申込み方法</h3>
             <p className="steps">
