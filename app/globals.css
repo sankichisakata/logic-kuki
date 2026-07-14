@@ -542,9 +542,9 @@ h2.section-title {
 
 /* ---------- Statement ---------- */
 .statement {
-  /* translucent rather than solid white so the fixed dot field behind
-     the page drifts through faintly as a parallax hint */
-  background: rgba(255, 255, 255, 0.86);
+  /* fully transparent so the fixed dot field behind the page reads
+     clearly through this section as a parallax layer */
+  background: transparent;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -661,7 +661,7 @@ h2.section-title {
 }
 
 #zoning {
-  background: rgba(255, 255, 255, 0.86);
+  background: transparent;
 }
 
 .zone-card {
@@ -834,7 +834,7 @@ h2.section-title {
 
 /* ---------- Area / working environment ---------- */
 .area {
-  background: rgba(255, 255, 255, 0.86);
+  background: transparent;
 }
 
 .area-grid {
@@ -986,7 +986,7 @@ h2.section-title {
 
 /* ---------- Viewing / CTA ---------- */
 .viewing {
-  background: rgba(255, 255, 255, 0.86);
+  background: transparent;
   border-top: 1px solid var(--line);
 }
 

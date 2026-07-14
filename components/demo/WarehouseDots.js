@@ -82,7 +82,30 @@ function samplePointOnFace(face) {
   return new THREE.Vector3().copy(p0).addScaledVector(edge1, u).addScaledVector(edge2, v);
 }
 
-const POINT_COUNT = 1600;
+const POINT_COUNT = 3000;
+
+// A sparse field scattered well beyond the warehouse volume itself, so the
+// dot layer reads as covering the whole viewport (not just a small object
+// floating in the center) as sections scroll past with a transparent
+// background over it.
+const AMBIENT_COUNT = 1100;
+
+function sampleAmbientPoint() {
+  return [(Math.random() - 0.5) * 62, (Math.random() - 0.5) * 34 + 5, (Math.random() - 0.5) * 70 - 8];
+}
+
+function useAmbientPoints() {
+  return useMemo(() => {
+    const positions = new Float32Array(AMBIENT_COUNT * 3);
+    for (let i = 0; i < AMBIENT_COUNT; i++) {
+      const [x, y, z] = sampleAmbientPoint();
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+    }
+    return positions;
+  }, []);
+}
 
 function useWarehousePoints() {
   return useMemo(() => {
@@ -119,13 +142,18 @@ function useWarehousePoints() {
 
 function WarehousePoints() {
   const { positions, flicker } = useWarehousePoints();
+  const ambientPositions = useAmbientPoints();
   const pointsRef = useRef(null);
   const groupRef = useRef(null);
+  const ambientRef = useRef(null);
   const material = useRef(null);
 
   useFrame((state, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.09;
+    }
+    if (ambientRef.current) {
+      ambientRef.current.rotation.y -= delta * 0.015;
     }
     if (material.current) {
       const t = state.clock.elapsedTime;
@@ -134,35 +162,53 @@ function WarehousePoints() {
   });
 
   return (
-    <group ref={groupRef} position={[0, -1, 0]}>
-      <points ref={pointsRef}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" count={POINT_COUNT} array={positions} itemSize={3} />
-        </bufferGeometry>
-        <pointsMaterial
-          ref={material}
-          color="#1e7fe0"
-          size={0.052}
-          sizeAttenuation
-          transparent
-          opacity={0.8}
-          depthWrite={false}
-        />
-      </points>
-      {/* A sparse warm-accent layer gives the dot cloud a bit of the
-          coporate orange without overwhelming the blue field. */}
-      <points>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={Math.floor(POINT_COUNT * 0.06)}
-            array={positions.slice(0, Math.floor(POINT_COUNT * 0.06) * 3)}
-            itemSize={3}
+    <>
+      <group ref={groupRef} position={[0, -1, 0]}>
+        <points ref={pointsRef}>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" count={POINT_COUNT} array={positions} itemSize={3} />
+          </bufferGeometry>
+          <pointsMaterial
+            ref={material}
+            color="#1e7fe0"
+            size={0.052}
+            sizeAttenuation
+            transparent
+            opacity={0.8}
+            depthWrite={false}
           />
-        </bufferGeometry>
-        <pointsMaterial color="#ff7a29" size={0.06} sizeAttenuation transparent opacity={0.55} depthWrite={false} />
-      </points>
-    </group>
+        </points>
+        {/* A sparse warm-accent layer gives the dot cloud a bit of the
+            coporate orange without overwhelming the blue field. */}
+        <points>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={Math.floor(POINT_COUNT * 0.06)}
+              array={positions.slice(0, Math.floor(POINT_COUNT * 0.06) * 3)}
+              itemSize={3}
+            />
+          </bufferGeometry>
+          <pointsMaterial color="#ff7a29" size={0.06} sizeAttenuation transparent opacity={0.55} depthWrite={false} />
+        </points>
+      </group>
+      {/* Wide, sparse ambient field so the dot layer visibly spans the full
+          viewport rather than reading as a small object floating in the
+          middle of an otherwise empty background. */}
+      <group ref={ambientRef}>
+        <points>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={AMBIENT_COUNT}
+              array={ambientPositions}
+              itemSize={3}
+            />
+          </bufferGeometry>
+          <pointsMaterial color="#1e7fe0" size={0.04} sizeAttenuation transparent opacity={0.4} depthWrite={false} />
+        </points>
+      </group>
+    </>
   );
 }
 
