@@ -52,10 +52,13 @@
     border-bottom:1px solid transparent;
   }
   .nav.is-scrolled{
-    background:rgba(18,19,22,0.86);
+    background:rgba(18,19,22,0.92);
     backdrop-filter:blur(10px);
     padding:14px 32px;
     border-bottom:1px solid var(--line);
+  }
+  @media (max-width:760px){
+    .nav.is-scrolled{ backdrop-filter:none; background:rgba(15,16,19,0.97); }
   }
   .nav-logo{
     font-family:var(--font-display);
@@ -105,6 +108,9 @@
     position:relative;
     height:340vh;
   }
+  @media (max-width:760px){
+    .hero-scroll{ height:220vh; }
+  }
   .hero-sticky{
     position:sticky; top:0; left:0;
     height:100vh; width:100%;
@@ -117,15 +123,19 @@
     background-position:center;
     opacity:0;
     will-change:opacity, transform;
+    transform:translateZ(0);
   }
   .hero-layer::after{
     content:"";
     position:absolute; inset:0;
     background:linear-gradient(180deg, rgba(10,11,13,.35) 0%, rgba(10,11,13,.25) 45%, rgba(10,11,13,.82) 100%);
   }
-  #layer-1{ background-image:url('assets/processed/hero_aerial.jpg'); opacity:1; }
-  #layer-2{ background-image:url('assets/processed/facade_entry.jpg'); }
-  #layer-3{ background-image:url('assets/processed/p13_01_670x467_crop.jpg'); }
+  #layer-1{ background-image:url('assets/processed/hero_aerial.webp'); opacity:1; }
+  #layer-2{ background-image:url('assets/processed/facade_entry.webp'); }
+  #layer-3{ background-image:url('assets/processed/p13_01_670x467_crop.webp'); }
+  @media (max-width:760px){
+    #layer-1{ background-image:url('assets/processed/hero_aerial_mobile.webp'); }
+  }
 
   .hero-copy{
     position:absolute; inset:0;
@@ -370,11 +380,12 @@
     margin-top:56px;
     display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
   }
-  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
+  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; gap:14px; } }
   .gal-card{
     position:relative; overflow:hidden; aspect-ratio:3/4;
     border:1px solid var(--line);
   }
+  @media (max-width:760px){ .gal-card{ aspect-ratio:4/3; } }
   .gal-card img{
     width:100%; height:100%; object-fit:cover;
     transition:transform .7s cubic-bezier(.2,.7,.2,1), filter .7s ease;
@@ -458,7 +469,7 @@
 </head>
 <body>
 
-  <div class="rail"><div class="rail-fill" id="railFill"></div><div class="rail-label">SCROLL</div></div>
+  <div class="rail"><div class="rail-fill" id="railFill"></div><div class="rail-label">スクロール</div></div>
 
   <nav class="nav" id="nav">
     <div class="nav-logo"><span class="dot"></span>久喜LOGIC</div>
@@ -472,7 +483,7 @@
       <div class="hero-layer" id="layer-2"></div>
       <div class="hero-layer" id="layer-3"></div>
       <div class="hero-copy" id="heroCopy">
-        <div class="hero-eyebrow">SAITAMA KUKI &nbsp;/&nbsp; LOGISTICS FACILITY</div>
+        <div class="hero-eyebrow">埼玉県久喜市 ／ 物流施設</div>
         <h1 class="hero-title">久喜LOGIC</h1>
         <p class="hero-sub">梁下5.5m、無柱の倉庫棟3,590坪。首都圏と東北をつなぐ新しい物流拠点が、久喜に竣工します。</p>
         <div class="hero-meta">
@@ -481,7 +492,7 @@
           <span><b>竣工前内覧会</b> 受付中</span>
         </div>
       </div>
-      <div class="hero-scrollcue"><span>SCROLL</span><span class="line"></span></div>
+      <div class="hero-scrollcue"><span>スクロール</span><span class="line"></span></div>
     </div>
   </section>
 
@@ -504,37 +515,37 @@
   <!-- SPEC -->
   <section class="section-pad" id="spec">
     <div class="wrap">
-      <div class="eyebrow">FACILITY SPEC</div>
+      <div class="eyebrow">施設スペック</div>
       <h2 class="section-title">倉庫スペック</h2>
       <p class="section-intro">S造・地上2階、無柱空間を活かした保管・配送拠点。床荷重1.5t/㎡、EV両面開きなど、稼働を止めない設備を備えています。</p>
       <div class="spec-grid">
         <div class="spec-card">
-          <div class="icon">CLEARANCE</div>
+          <div class="icon">梁下有効高</div>
           <div class="value">5.5<small>m以上</small></div>
           <div class="desc">梁下有効高。大型車両・高積み保管に対応。</div>
         </div>
         <div class="spec-card">
-          <div class="icon">FLOOR LOAD</div>
+          <div class="icon">床荷重</div>
           <div class="value">1.5<small>t/㎡</small></div>
           <div class="desc">床荷重。重量物の保管にも余裕を持たせています。</div>
         </div>
         <div class="spec-card">
-          <div class="icon">TRUCK BERTH</div>
+          <div class="icon">トラックバース</div>
           <div class="value">12<small>台</small></div>
           <div class="desc">同時荷役が可能なトラックバースを配置。</div>
         </div>
         <div class="spec-card">
-          <div class="icon">PARKING</div>
+          <div class="icon">駐車場</div>
           <div class="value">約40<small>台</small></div>
           <div class="desc">乗用車約40台相当、約240坪の駐車場を確保。</div>
         </div>
         <div class="spec-card">
-          <div class="icon">STRUCTURE</div>
+          <div class="icon">構造・規模</div>
           <div class="value">S造<small>地上2階</small></div>
           <div class="desc">用途地域：市街化調整区域（都計法34条12号指定）。</div>
         </div>
         <div class="spec-card">
-          <div class="icon">ELEVATOR</div>
+          <div class="icon">エレベーター</div>
           <div class="value">EV<small>両面開き</small></div>
           <div class="desc">1階・2階間の搬送動線をスムーズに。</div>
         </div>
@@ -545,12 +556,12 @@
   <!-- ZONING -->
   <section class="section-pad" id="zoning" style="background:var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
     <div class="wrap">
-      <div class="eyebrow">ZONING &amp; RENT</div>
+      <div class="eyebrow">区画と賃料</div>
       <h2 class="section-title">区画プラン</h2>
       <p class="section-intro">倉庫棟は西区画（A・C）・東区画（B・D）の2区画。事務所棟を含め、用途に合わせた面積で募集しています（賃料・共益費は別途消費税）。</p>
       <div class="zoning-grid">
         <div class="zone-card">
-          <div class="zone-head"><span class="zone-name">倉庫棟　西区画（A・C）</span><span class="zone-tag">WAREHOUSE / WEST</span></div>
+          <div class="zone-head"><span class="zone-name">倉庫棟　西区画（A・C）</span><span class="zone-tag">西区画</span></div>
           <div class="zone-row"><span>倉庫1階</span><b>468.80坪</b></div>
           <div class="zone-row"><span>倉庫2階</span><b>468.80坪</b></div>
           <div class="zone-row"><span>バース</span><b>131.56坪</b></div>
@@ -558,7 +569,7 @@
           <div class="zone-rent"><span class="label">賃料</span><span class="price">3,590<small>円 / 坪・共益費応相談</small></span></div>
         </div>
         <div class="zone-card">
-          <div class="zone-head"><span class="zone-name">倉庫棟　東区画（B・D）</span><span class="zone-tag">WAREHOUSE / EAST</span></div>
+          <div class="zone-head"><span class="zone-name">倉庫棟　東区画（B・D）</span><span class="zone-tag">東区画</span></div>
           <div class="zone-row"><span>倉庫1階</span><b>454.41坪</b></div>
           <div class="zone-row"><span>倉庫2階</span><b>454.41坪</b></div>
           <div class="zone-row"><span>バース</span><b>131.56坪</b></div>
@@ -566,7 +577,7 @@
           <div class="zone-rent"><span class="label">賃料</span><span class="price">3,590<small>円 / 坪・共益費応相談</small></span></div>
         </div>
         <div class="zone-card">
-          <div class="zone-head"><span class="zone-name">事務所棟</span><span class="zone-tag">OFFICE</span></div>
+          <div class="zone-head"><span class="zone-name">事務所棟</span><span class="zone-tag">事務所</span></div>
           <div class="zone-row"><span>事務所1階</span><b>49.06坪</b></div>
           <div class="zone-row"><span>事務所2階</span><b>49.06坪</b></div>
           <div class="zone-row"><span>合計</span><b>98.12坪</b></div>
@@ -580,7 +591,7 @@
   <!-- ACCESS -->
   <section class="section-pad access" id="access">
     <div class="wrap">
-      <div class="eyebrow">ACCESS</div>
+      <div class="eyebrow">アクセス</div>
       <h2 class="section-title">首都圏と東北を結ぶ立地</h2>
       <div class="access-grid">
         <div>
@@ -595,7 +606,7 @@
           <div class="viewing-note" style="margin-top:26px;">所在地：埼玉県久喜市高柳2927番1他 ／ 敷地は国道125号（2車線道路）に接道</div>
         </div>
         <div class="access-photo">
-          <img src="assets/processed/access_ic.jpg" alt="東北自動車道インターチェンジ 上空俯瞰" />
+          <img src="assets/processed/access_ic.webp" alt="東北自動車道インターチェンジ 上空俯瞰" />
           <div class="cap">東北自動車道 インターチェンジ付近</div>
         </div>
       </div>
@@ -605,7 +616,7 @@
   <!-- AREA / WORKING ENVIRONMENT -->
   <section class="section-pad area" id="area">
     <div class="wrap">
-      <div class="eyebrow">AREA GUIDE</div>
+      <div class="eyebrow">周辺エリア</div>
       <h2 class="section-title">はたらく人の目線で見る、立地条件</h2>
       <p class="section-intro">毎日通う場所だからこそ、通勤のしやすさや周辺の環境も大切な条件です。地図で位置関係を確認いただけます。</p>
       <div class="area-grid">
@@ -655,21 +666,21 @@
   <!-- GALLERY -->
   <section class="section-pad" id="interior">
     <div class="wrap">
-      <div class="eyebrow">INTERIOR</div>
+      <div class="eyebrow">内観</div>
       <h2 class="section-title">内観イメージ</h2>
       <p class="section-intro">事務所棟のエントランスからオフィスまで、働く場としての快適性にもこだわりました。</p>
       <div class="gallery">
         <div class="gal-card">
-          <img src="assets/processed/p13_01_670x467_crop.jpg" alt="エントランス 内観イメージ" />
-          <div class="gal-label"><div class="num">01 / ENTRANCE</div><div class="name">エントランス</div></div>
+          <img src="assets/processed/p13_01_670x467_crop.webp" alt="エントランス 内観イメージ" />
+          <div class="gal-label"><div class="num">01</div><div class="name">エントランス</div></div>
         </div>
         <div class="gal-card">
-          <img src="assets/processed/p13_02_514x359_crop.jpg" alt="1Fトイレ 内観イメージ" />
-          <div class="gal-label"><div class="num">02 / RESTROOM</div><div class="name">1Fトイレ</div></div>
+          <img src="assets/processed/p13_02_514x359_crop.webp" alt="1Fトイレ 内観イメージ" />
+          <div class="gal-label"><div class="num">02</div><div class="name">1Fトイレ</div></div>
         </div>
         <div class="gal-card">
-          <img src="assets/processed/p13_00_511x349_crop.jpg" alt="2Fオフィス 内観イメージ" />
-          <div class="gal-label"><div class="num">03 / OFFICE</div><div class="name">2Fオフィス</div></div>
+          <img src="assets/processed/p13_00_511x349_crop.webp" alt="2Fオフィス 内観イメージ" />
+          <div class="gal-label"><div class="num">03</div><div class="name">2Fオフィス</div></div>
         </div>
       </div>
     </div>
@@ -678,7 +689,7 @@
   <!-- VIEWING CTA -->
   <section class="section-pad viewing" id="viewing">
     <div class="wrap">
-      <div class="eyebrow">PRE-COMPLETION VIEWING</div>
+      <div class="eyebrow">竣工前内覧会</div>
       <h2 class="section-title">竣工前内覧会 開催</h2>
       <p class="section-intro">現地の無柱空間・梁下有効高を、竣工前の今だからこそ体感いただけます。下記日程のほか、ご希望に合わせて内覧可能です。</p>
 
@@ -739,6 +750,7 @@
   var heroCue = document.querySelector('.hero-scrollcue');
   var railFill = document.getElementById('railFill');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mobileMq = window.matchMedia('(max-width:760px)');
 
   function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
   function lerp(a,b,t){ return a + (b-a)*t; }
@@ -780,18 +792,23 @@
       var op2 = fadeWindow(0.14, 0.26, 0.54, 0.68); // facade: fades in, holds, fades out
       var op3 = fadeWindow(0.58, 0.74, 1.5, 1.6);   // interior: fades in, stays
 
-      var p1 = rangeProgress(p, 0, 0.30);
-      var p2 = rangeProgress(p, 0.20, 0.66);
-      var p3 = rangeProgress(p, 0.60, 1.0);
+      var isMobile = mobileMq.matches;
 
       layer1.style.opacity = op1;
-      layer1.style.transform = 'scale(' + lerp(1, 1.14, p1) + ')';
-
       layer2.style.opacity = op2;
-      layer2.style.transform = 'scale(' + lerp(1.04, 1.2, p2) + ')';
-
       layer3.style.opacity = op3;
-      layer3.style.transform = 'scale(' + lerp(1.08, 1.24, p3) + ')';
+
+      // Scale (zoom) transforms are skipped on mobile: they force continuous
+      // compositing of large full-screen layers and are the main cause of
+      // scroll jank on phones. Opacity-only crossfade stays smooth.
+      if(!isMobile){
+        var p1 = rangeProgress(p, 0, 0.30);
+        var p2 = rangeProgress(p, 0.20, 0.66);
+        var p3 = rangeProgress(p, 0.60, 1.0);
+        layer1.style.transform = 'scale(' + lerp(1, 1.14, p1) + ')';
+        layer2.style.transform = 'scale(' + lerp(1.04, 1.2, p2) + ')';
+        layer3.style.transform = 'scale(' + lerp(1.08, 1.24, p3) + ')';
+      }
 
       var copyFade = 1 - rangeProgress(p, 0, 0.16);
       heroCopy.style.opacity = copyFade;
