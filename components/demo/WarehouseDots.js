@@ -82,7 +82,7 @@ function samplePointOnFace(face) {
   return new THREE.Vector3().copy(p0).addScaledVector(edge1, u).addScaledVector(edge2, v);
 }
 
-const POINT_COUNT = 5200;
+const POINT_COUNT = 1600;
 
 function useWarehousePoints() {
   return useMemo(() => {
@@ -167,15 +167,21 @@ function WarehousePoints() {
 }
 
 /**
- * Reads scrollRef.current (0..1) every frame and eases the camera back.
+ * Reads scrollRef.current every frame. `p` (0..1) drives the hero reveal
+ * camera move; once the hero section has scrolled past, `p` stays at 1
+ * and `extra` (raw scrollY beyond the hero) adds a slow side-to-side
+ * drift so the field keeps reading as a living parallax layer behind the
+ * rest of the page rather than freezing in place.
  */
 function CameraRig({ scrollRef }) {
   const { camera } = useThree();
   useFrame(() => {
-    const p = scrollRef?.current ?? 0;
+    const p = scrollRef?.current?.p ?? 0;
+    const extra = scrollRef?.current?.extra ?? 0;
     const e = easeOutCubic(p);
     camera.position.z = lerp(20, 32, e);
-    camera.position.y = lerp(4.5, 8.5, e);
+    camera.position.y = lerp(4.5, 8.5, e) + Math.sin(extra * 0.0006) * 1.4;
+    camera.position.x = Math.sin(extra * 0.00045) * 2.6;
     camera.fov = lerp(52, 44, e);
     camera.updateProjectionMatrix();
     camera.lookAt(0, 0.5, 0);

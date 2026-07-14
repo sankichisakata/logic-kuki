@@ -61,6 +61,23 @@ a {
   color: #ffffff;
 }
 
+/* ---------- Background field (fixed, behind everything) ---------- */
+.bg-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-scene canvas {
+  display: block;
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
+}
+
 /* ---------- Hero ---------- */
 .hero-scroll {
   position: relative;
@@ -73,13 +90,9 @@ a {
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: var(--bg);
-}
-
-.hero-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+  /* transparent so the fixed background field (BackgroundScene) shows
+     through around the photo card */
+  background: transparent;
 }
 
 .hero-photo-frame {
@@ -529,7 +542,9 @@ h2.section-title {
 
 /* ---------- Statement ---------- */
 .statement {
-  background: var(--bg);
+  /* translucent rather than solid white so the fixed dot field behind
+     the page drifts through faintly as a parallax hint */
+  background: rgba(255, 255, 255, 0.86);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -646,7 +661,7 @@ h2.section-title {
 }
 
 #zoning {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.86);
 }
 
 .zone-card {
@@ -819,7 +834,7 @@ h2.section-title {
 
 /* ---------- Area / working environment ---------- */
 .area {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.86);
 }
 
 .area-grid {
@@ -971,7 +986,7 @@ h2.section-title {
 
 /* ---------- Viewing / CTA ---------- */
 .viewing {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.86);
   border-top: 1px solid var(--line);
 }
 
