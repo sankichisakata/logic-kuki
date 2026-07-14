@@ -9,17 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg: #121316;
-    --bg-panel: #191b20;
-    --bg-panel-2: #1f222a;
-    --ink: #F3F0E8;
-    --ink-dim: #9BA0AC;
-    --ink-faint: #5C616D;
+    --bg: #0A1220;
+    --bg-panel: #0F1B2E;
+    --bg-panel-2: #142A45;
+    --ink: #EEF3FA;
+    --ink-dim: #8FA3C4;
+    --ink-faint: #4E6284;
     --accent: #FF7A29;
     --accent-dim: #7a4222;
-    --navy: #262E42;
-    --line: rgba(243,240,232,0.12);
-    --line-strong: rgba(243,240,232,0.22);
+    --navy: #1B2C4A;
+    --line: rgba(210,226,250,0.10);
+    --line-strong: rgba(210,226,250,0.20);
     --font-display: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -52,13 +52,13 @@
     border-bottom:1px solid transparent;
   }
   .nav.is-scrolled{
-    background:rgba(18,19,22,0.92);
+    background:rgba(10,18,32,0.92);
     backdrop-filter:blur(10px);
     padding:14px 32px;
     border-bottom:1px solid var(--line);
   }
   @media (max-width:760px){
-    .nav.is-scrolled{ backdrop-filter:none; background:rgba(15,16,19,0.97); }
+    .nav.is-scrolled{ backdrop-filter:none; background:rgba(8,14,26,0.97); }
   }
   .nav-logo{
     font-family:var(--font-display);
@@ -115,7 +115,7 @@
     position:sticky; top:0; left:0;
     height:100vh; width:100%;
     overflow:hidden;
-    background:#0c0d0f;
+    background:#0A1220;
   }
   .hero-layer{
     position:absolute; inset:0;
@@ -128,7 +128,7 @@
   .hero-layer::after{
     content:"";
     position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(10,11,13,.35) 0%, rgba(10,11,13,.25) 45%, rgba(10,11,13,.82) 100%);
+    background:linear-gradient(180deg, rgba(8,14,26,.4) 0%, rgba(8,14,26,.28) 45%, rgba(8,14,26,.85) 100%);
   }
   #layer-1{ background-image:url('assets/processed/hero_aerial.webp'); opacity:1; }
   #layer-2{ background-image:url('assets/processed/facade_entry.webp'); }
@@ -341,7 +341,7 @@
   .access-photo .cap{
     position:absolute; left:16px; bottom:16px;
     font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
-    background:rgba(10,11,13,.6); padding:6px 12px; color:var(--ink-dim);
+    background:rgba(8,14,26,.65); padding:6px 12px; color:var(--ink-dim);
   }
 
   /* ---------- Area / working environment ---------- */
@@ -362,7 +362,7 @@
   .area-map .cap{
     position:absolute; right:0; top:0;
     font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
-    background:rgba(10,11,13,.78); padding:8px 14px; color:var(--ink-dim);
+    background:rgba(8,14,26,.8); padding:8px 14px; color:var(--ink-dim);
     pointer-events:none;
   }
   .area-points{ display:flex; flex-direction:column; }
@@ -395,7 +395,7 @@
   .gal-card .gal-label{
     position:absolute; left:0; right:0; bottom:0;
     padding:20px;
-    background:linear-gradient(180deg, transparent, rgba(8,9,10,.9));
+    background:linear-gradient(180deg, transparent, rgba(7,12,22,.92));
   }
   .gal-card .gal-label .num{ font-family:var(--font-mono); font-size:11px; color:var(--accent); }
   .gal-card .gal-label .name{ font-family:var(--font-display); font-weight:700; font-size:18px; margin-top:4px; }
@@ -694,9 +694,9 @@
       <p class="section-intro">現地の無柱空間・梁下有効高を、竣工前の今だからこそ体感いただけます。下記日程のほか、ご希望に合わせて内覧可能です。</p>
 
       <div class="dates-grid">
-        <div class="date-card"><div class="dow">THU</div><div class="md">7.22</div><div class="time">10:00 - 17:00</div></div>
-        <div class="date-card"><div class="dow">WED</div><div class="md">8.5</div><div class="time">10:00 - 17:00</div></div>
-        <div class="date-card"><div class="dow">TUE</div><div class="md">8.18</div><div class="time">10:00 - 17:00</div></div>
+        <div class="date-card"><div class="dow">木曜日</div><div class="md">7月22日</div><div class="time">10:00 - 17:00</div></div>
+        <div class="date-card"><div class="dow">水曜日</div><div class="md">8月5日</div><div class="time">10:00 - 17:00</div></div>
+        <div class="date-card"><div class="dow">火曜日</div><div class="md">8月18日</div><div class="time">10:00 - 17:00</div></div>
       </div>
       <div class="viewing-note">※ 上記以外の日程もご希望に合わせて内覧可能です。</div>
 
