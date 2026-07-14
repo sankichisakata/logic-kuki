@@ -2,3 +2,5 @@
 .vercel
 node_modules
 assets/raw/
+.next
+next-env.d.ts
