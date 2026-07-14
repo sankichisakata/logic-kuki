@@ -18,8 +18,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          ※
-          資料の内容は概略となります。契約成立の場合、原則として法令に定める基準に従い仲介手数料を申し受けます。賃料・共益費等は別途消費税となります。条件や設備は変更する可能性がありますので、ご契約の詳細は各建物の賃貸借契約書等でご確認ください。資料の内容が現状と異なる場合は、現況優先となります。
+          ※資料の内容は概要となります。予告なく変更となる可能性があります。
           <br />
           © Alliance Communication. All rights reserved.
         </div>
