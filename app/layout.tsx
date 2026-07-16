@@ -1,11 +1,16 @@
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import './globals.css';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: '久喜LOGIC | 埼玉県久喜市 竣工前内覧会受付中',
   description: '梁下5.5m、無柱の倉庫棟3,590坪。首都圏と東北をつなぐ新しい物流拠点、久喜LOGICの竣工前内覧会受付中。',
 };
 
-export default function RootLayout({ children }) {
+/**
+ * 全ページ共通のルートレイアウト。Googleフォントの読み込みとhtml/body枠を提供する。
+ */
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
       <head>

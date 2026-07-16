@@ -11,6 +11,9 @@ import Gallery from '@/components/Gallery';
 import Viewing from '@/components/Viewing';
 import Footer from '@/components/Footer';
 
+/**
+ * トップページ。背景3Dシーン・ナビ・各セクションを組み立てる。
+ */
 export default function Home() {
   return (
     <>
