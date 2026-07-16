@@ -1,10 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 
+/**
+ * 固定ナビ・スクロール進捗レール・トップに戻るボタン。
+ * スクロール量に応じてナビの見た目と進捗を更新する。
+ */
 export default function ScrollChrome() {
-  const navRef = useRef(null);
-  const railFillRef = useRef(null);
+  const navRef = useRef<HTMLElement | null>(null);
+  const railFillRef = useRef<HTMLDivElement | null>(null);
   const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
@@ -40,7 +44,8 @@ export default function ScrollChrome() {
     };
   }, []);
 
-  function scrollToTop(e) {
+  /** ロゴ・トップに戻るボタン押下時にページ最上部へスムーズスクロールする。 */
+  function scrollToTop(e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
