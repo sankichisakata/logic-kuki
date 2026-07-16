@@ -233,10 +233,12 @@ function CameraRig({ scrollRef }: { scrollRef?: RefObject<ScrollState> }) {
     const p = scrollRef?.current?.p ?? 0;
     const extra = scrollRef?.current?.extra ?? 0;
     const e = easeOutCubic(p);
+    // 同上: three.jsカメラへの直接変異はr3fの定型（誤検知抑止）
     // eslint-disable-next-line react-hooks/immutability
     camera.position.z = lerp(20, 32, e);
     camera.position.y = lerp(4.5, 8.5, e) + Math.sin(extra * 0.0006) * 1.4;
     camera.position.x = Math.sin(extra * 0.00045) * 2.6;
+    // 同上: three.jsカメラへの直接変異はr3fの定型（誤検知抑止）
     // eslint-disable-next-line react-hooks/immutability
     camera.fov = lerp(52, 44, e);
     camera.updateProjectionMatrix();
