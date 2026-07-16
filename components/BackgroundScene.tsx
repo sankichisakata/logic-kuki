@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import WarehouseDots, { warehouseDotsCamera } from './demo/WarehouseDots';
+import WarehouseDots, { warehouseDotsCamera, type ScrollState } from './demo/WarehouseDots';
 
 /**
  * A single fixed, full-viewport 3D scene that sits behind the entire
@@ -13,14 +13,15 @@ import WarehouseDots, { warehouseDotsCamera } from './demo/WarehouseDots';
  * while the solid blue-tinted sections simply cover it.
  */
 export default function BackgroundScene() {
-  const scrollRef = useRef({ p: 0, extra: 0 });
+  const scrollRef = useRef<ScrollState>({ p: 0, extra: 0 });
 
   useEffect(() => {
     let ticking = false;
 
     function update() {
       ticking = false;
-      const hero = document.querySelector('.hero-scroll');
+      // offsetHeight参照のため型引数が必要
+      const hero = document.querySelector<HTMLElement>('.hero-scroll');
       const scrollY = window.scrollY || window.pageYOffset;
       const heroPx = hero ? hero.offsetHeight - window.innerHeight : 0;
       const p = heroPx > 0 ? Math.max(0, Math.min(1, scrollY / heroPx)) : 0;

@@ -3,18 +3,26 @@
 import { useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import type { RefObject } from 'react';
 
-function lerp(a, b, t) {
+/** 背景シーンがフレーム毎に読むスクロール状態。 */
+export type ScrollState = { p: number; extra: number };
+
+function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
-function easeOutCubic(t) {
+function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
+
+// 面の型（quad=4点 / tri=3点）
+type Face = { type: 'quad' | 'tri'; pts: THREE.Vector3[] };
+type FaceWithArea = Face & { area: number };
 
 // A gable-roofed warehouse volume, described as a set of flat faces so we
 // can scatter points across its surface (quads as two triangles, plus the
 // triangular gable ends).
-function buildWarehouseFaces() {
+function buildWarehouseFaces(): FaceWithArea[] {
   const W = 17; // width (x)
   const D = 36; // length (z) — long, like the real building
   const H1 = 4.6; // wall height
@@ -23,7 +31,7 @@ function buildWarehouseFaces() {
   const w = W / 2;
   const d = D / 2;
 
-  const bl = (x, y, z) => new THREE.Vector3(x, y, z);
+  const bl = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
 
   // wall corners
   const A0 = bl(-w, 0, -d), A1 = bl(w, 0, -d), A2 = bl(w, 0, d), A3 = bl(-w, 0, d);
@@ -32,8 +40,8 @@ function buildWarehouseFaces() {
   const R0 = bl(0, H1 + H2, -d), R1 = bl(0, H1 + H2, d);
 
   // Each face: { type: 'quad'|'tri', pts: [...], area }
-  const quad = (p0, p1, p2, p3) => ({ type: 'quad', pts: [p0, p1, p2, p3] });
-  const tri = (p0, p1, p2) => ({ type: 'tri', pts: [p0, p1, p2] });
+  const quad = (p0: THREE.Vector3, p1: THREE.Vector3, p2: THREE.Vector3, p3: THREE.Vector3): Face => ({ type: 'quad', pts: [p0, p1, p2, p3] });
+  const tri = (p0: THREE.Vector3, p1: THREE.Vector3, p2: THREE.Vector3): Face => ({ type: 'tri', pts: [p0, p1, p2] });
 
   const faces = [
     quad(A0, A1, B1, B0), // front wall
@@ -46,7 +54,7 @@ function buildWarehouseFaces() {
     quad(B1, B2, R1, R0), // roof right slope (winding kept consistent for area calc only)
   ];
 
-  function faceArea(f) {
+  function faceArea(f: Face): number {
     if (f.type === 'tri') {
       const [p0, p1, p2] = f.pts;
       return new THREE.Triangle(p0, p1, p2).getArea();
@@ -60,7 +68,7 @@ function buildWarehouseFaces() {
   return faces.map((f) => ({ ...f, area: faceArea(f) }));
 }
 
-function samplePointOnFace(face) {
+function samplePointOnFace(face: Face): THREE.Vector3 {
   if (face.type === 'tri') {
     let u = Math.random();
     let v = Math.random();
@@ -90,11 +98,11 @@ const POINT_COUNT = 3000;
 // background over it.
 const AMBIENT_COUNT = 1100;
 
-function sampleAmbientPoint() {
+function sampleAmbientPoint(): [number, number, number] {
   return [(Math.random() - 0.5) * 62, (Math.random() - 0.5) * 34 + 5, (Math.random() - 0.5) * 70 - 8];
 }
 
-function useAmbientPoints() {
+function useAmbientPoints(): Float32Array {
   return useMemo(() => {
     const positions = new Float32Array(AMBIENT_COUNT * 3);
     for (let i = 0; i < AMBIENT_COUNT; i++) {
@@ -107,7 +115,7 @@ function useAmbientPoints() {
   }, []);
 }
 
-function useWarehousePoints() {
+function useWarehousePoints(): { positions: Float32Array; flicker: Float32Array } {
   return useMemo(() => {
     const faces = buildWarehouseFaces();
     const totalArea = faces.reduce((s, f) => s + f.area, 0);
@@ -143,10 +151,10 @@ function useWarehousePoints() {
 function WarehousePoints() {
   const { positions, flicker } = useWarehousePoints();
   const ambientPositions = useAmbientPoints();
-  const pointsRef = useRef(null);
-  const groupRef = useRef(null);
-  const ambientRef = useRef(null);
-  const material = useRef(null);
+  const pointsRef = useRef<THREE.Points | null>(null);
+  const groupRef = useRef<THREE.Group | null>(null);
+  const ambientRef = useRef<THREE.Group | null>(null);
+  const material = useRef<THREE.PointsMaterial | null>(null);
 
   useFrame((state, delta) => {
     if (groupRef.current) {
@@ -166,7 +174,7 @@ function WarehousePoints() {
       <group ref={groupRef} position={[0, -1, 0]}>
         <points ref={pointsRef}>
           <bufferGeometry>
-            <bufferAttribute attach="attributes-position" count={POINT_COUNT} array={positions} itemSize={3} />
+            <bufferAttribute attach="attributes-position" args={[positions, 3]} />
           </bufferGeometry>
           <pointsMaterial
             ref={material}
@@ -184,9 +192,7 @@ function WarehousePoints() {
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              count={Math.floor(POINT_COUNT * 0.06)}
-              array={positions.slice(0, Math.floor(POINT_COUNT * 0.06) * 3)}
-              itemSize={3}
+              args={[positions.slice(0, Math.floor(POINT_COUNT * 0.06) * 3), 3]}
             />
           </bufferGeometry>
           <pointsMaterial color="#ff7a29" size={0.06} sizeAttenuation transparent opacity={0.55} depthWrite={false} />
@@ -200,9 +206,7 @@ function WarehousePoints() {
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              count={AMBIENT_COUNT}
-              array={ambientPositions}
-              itemSize={3}
+              args={[ambientPositions, 3]}
             />
           </bufferGeometry>
           <pointsMaterial color="#1e7fe0" size={0.04} sizeAttenuation transparent opacity={0.4} depthWrite={false} />
@@ -219,15 +223,21 @@ function WarehousePoints() {
  * drift so the field keeps reading as a living parallax layer behind the
  * rest of the page rather than freezing in place.
  */
-function CameraRig({ scrollRef }) {
-  const { camera } = useThree();
+function CameraRig({ scrollRef }: { scrollRef?: RefObject<ScrollState> }) {
+  // useThree() の camera は THREE.Camera 型で fov を持たないため、
+  // 実体（PerspectiveCamera）にキャストして扱う（挙動同一）
+  const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
+  // three.jsのカメラはuseFrame内で直接変異させるのがr3fの定型（Reactの状態ではない）
+  // eslint-disable-next-line react-hooks/immutability
   useFrame(() => {
     const p = scrollRef?.current?.p ?? 0;
     const extra = scrollRef?.current?.extra ?? 0;
     const e = easeOutCubic(p);
+    // eslint-disable-next-line react-hooks/immutability
     camera.position.z = lerp(20, 32, e);
     camera.position.y = lerp(4.5, 8.5, e) + Math.sin(extra * 0.0006) * 1.4;
     camera.position.x = Math.sin(extra * 0.00045) * 2.6;
+    // eslint-disable-next-line react-hooks/immutability
     camera.fov = lerp(52, 44, e);
     camera.updateProjectionMatrix();
     camera.lookAt(0, 0.5, 0);
@@ -235,7 +245,8 @@ function CameraRig({ scrollRef }) {
   return null;
 }
 
-export default function WarehouseDots({ scrollRef }) {
+/** 倉庫型ドットフィールド全体。 */
+export default function WarehouseDots({ scrollRef }: { scrollRef?: RefObject<ScrollState> }) {
   return (
     <group>
       <fog attach="fog" args={['#f4f6f9', 18, 64]} />
@@ -245,4 +256,4 @@ export default function WarehouseDots({ scrollRef }) {
   );
 }
 
-export const warehouseDotsCamera = { position: [0, 4.5, 20], fov: 52 };
+export const warehouseDotsCamera = { position: [0, 4.5, 20] as [number, number, number], fov: 52 };
