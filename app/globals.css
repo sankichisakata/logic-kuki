@@ -457,6 +457,52 @@ h2.section-title {
   transform: translateY(-1px);
 }
 
+/* ---------- ナビ右側のアクション群（資料DL + 申込CTA） ---------- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 資料DLボタン: 申込CTA（オレンジ塗り）を主役に保つゴースト調 */
+.nav-cta--ghost {
+  color: var(--accent-2);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
+}
+
+.nav.is-scrolled .nav-cta--ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
+.nav-cta--ghost:hover {
+  background: #ffffff;
+  color: var(--accent-2);
+  box-shadow: 0 4px 12px rgba(255, 122, 41, 0.2);
+}
+
+/* ラベルのPC/SP切替（既存ブレークポイント760pxに合わせる） */
+.nav-cta .label-sp {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .nav-cta .label-pc {
+    display: none;
+  }
+  .nav-cta .label-sp {
+    display: inline;
+  }
+  .nav-cta {
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+  .nav-actions {
+    gap: 8px;
+  }
+}
+
 /* ---------- Progress rail (signature element) ---------- */
 .rail {
   position: fixed;

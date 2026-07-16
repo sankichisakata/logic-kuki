@@ -61,9 +61,22 @@ export default function ScrollChrome() {
           <span className="dot" />
           久喜LOGIC
         </a>
-        <a className="nav-cta" href="#viewing">
-          内覧会に申し込む →
-        </a>
+        <div className="nav-actions">
+          {/* 内覧会資料PDFのダウンロード（セカンダリ）。PC/SPでラベルをCSS切替 */}
+          <a
+            className="nav-cta nav-cta--ghost"
+            href="/docs/kuki-logic-viewing-guide.pdf"
+            download
+          >
+            <span className="label-pc">内覧会資料ダウンロード</span>
+            <span className="label-sp">資料DL</span>
+          </a>
+          {/* 申込CTA（主役）。PC/SPでラベルをCSS切替 */}
+          <a className="nav-cta" href="#viewing">
+            <span className="label-pc">内覧会に申し込む →</span>
+            <span className="label-sp">申し込む</span>
+          </a>
+        </div>
       </nav>
       <button
         type="button"
