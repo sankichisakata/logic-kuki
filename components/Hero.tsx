@@ -2,20 +2,39 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-function lerp(a, b, t) {
+/**
+ * Linear interpolation between two values.
+ */
+function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
-function clamp(v, min, max) {
+
+/**
+ * Clamp a value between min and max.
+ */
+function clamp(v: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, v));
 }
-function easeOutCubic(t) {
+
+/**
+ * Ease-out cubic easing function.
+ */
+function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
-function rangeProgress(v, start, end) {
+
+/**
+ * Calculate progress within a range [start, end].
+ */
+function rangeProgress(v: number, start: number, end: number): number {
   if (end === start) return v >= end ? 1 : 0;
   return clamp((v - start) / (end - start), 0, 1);
 }
-function fadeWindow(p, inStart, inEnd, outStart, outEnd) {
+
+/**
+ * Calculate fade opacity with fade-in and fade-out windows.
+ */
+function fadeWindow(p: number, inStart: number, inEnd: number, outStart: number, outEnd: number): number {
   const fadeIn = rangeProgress(p, inStart, inEnd);
   const fadeOut = 1 - rangeProgress(p, outStart, outEnd);
   return Math.min(fadeIn, fadeOut);
@@ -35,16 +54,23 @@ const HERO_VH_MOBILE = 320;
 const PAUSE_POINTS = [0.42, 0.76];
 const PAUSE_MS = 110;
 
+type PauseState = {
+  locked: boolean;
+  lastP: number;
+  triggered: boolean[];
+  timer: ReturnType<typeof setTimeout> | null;
+};
+
 export default function Hero() {
-  const sectionRef = useRef(null);
-  const photoRef = useRef(null);
-  const bracketsRef = useRef(null);
-  const copy1Ref = useRef(null);
-  const copy2Ref = useRef(null);
-  const copy3Ref = useRef(null);
-  const cueRef = useRef(null);
-  const [heroVh, setHeroVh] = useState(HERO_VH_DESKTOP);
-  const pauseRef = useRef({ locked: false, lastP: 0, triggered: PAUSE_POINTS.map(() => false), timer: null });
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const photoRef = useRef<HTMLDivElement | null>(null);
+  const bracketsRef = useRef<HTMLDivElement | null>(null);
+  const copy1Ref = useRef<HTMLDivElement | null>(null);
+  const copy2Ref = useRef<HTMLDivElement | null>(null);
+  const copy3Ref = useRef<HTMLDivElement | null>(null);
+  const cueRef = useRef<HTMLDivElement | null>(null);
+  const [heroVh, setHeroVh] = useState<number>(HERO_VH_DESKTOP);
+  const pauseRef = useRef<PauseState>({ locked: false, lastP: 0, triggered: PAUSE_POINTS.map(() => false), timer: null });
 
   useEffect(() => {
     let ticking = false;
@@ -53,7 +79,7 @@ export default function Hero() {
       setHeroVh(window.innerWidth <= 760 ? HERO_VH_MOBILE : HERO_VH_DESKTOP);
     }
 
-    function lockScrollAt(targetY) {
+    function lockScrollAt(targetY: number) {
       const state = pauseRef.current;
       state.locked = true;
       window.scrollTo({ top: targetY, behavior: 'auto' });
@@ -62,7 +88,7 @@ export default function Hero() {
       // path — toggling overflow-y on the root element forces the page to
       // genuinely stop, regardless of input device or gesture timing.
       document.documentElement.style.overflowY = 'hidden';
-      clearTimeout(state.timer);
+      clearTimeout(state.timer ?? undefined);
       state.timer = setTimeout(() => {
         state.locked = false;
         document.documentElement.style.overflowY = '';
@@ -154,7 +180,7 @@ export default function Hero() {
     // While a pause is active, swallow the scroll input that's driving it
     // (wheel/trackpad + touch) so the page genuinely holds still for a
     // beat instead of just snapping back after drifting further.
-    function blockIfLocked(e) {
+    function blockIfLocked(e: WheelEvent | TouchEvent) {
       if (pauseRef.current.locked) {
         e.preventDefault();
       }
@@ -172,7 +198,7 @@ export default function Hero() {
       window.removeEventListener('resize', onResize);
       window.removeEventListener('wheel', blockIfLocked);
       window.removeEventListener('touchmove', blockIfLocked);
-      clearTimeout(pauseState.timer);
+      clearTimeout(pauseState.timer ?? undefined);
       document.documentElement.style.overflowY = '';
     };
   }, []);
