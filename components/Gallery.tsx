@@ -1,9 +1,14 @@
-const IMAGES = [
+import type { CSSProperties } from 'react';
+
+type GalleryImage = { num: string; name: string; src: string; alt: string };
+
+const IMAGES: GalleryImage[] = [
   { num: '01', name: 'エントランス', src: '/assets/processed/p13_01_670x467_crop.webp', alt: 'エントランス 内観イメージ' },
   { num: '02', name: '1Fトイレ', src: '/assets/processed/p13_02_514x359_crop.webp', alt: '1Fトイレ 内観イメージ' },
   { num: '03', name: '2Fオフィス', src: '/assets/processed/p13_00_511x349_crop.webp', alt: '2Fオフィス 内観イメージ' },
 ];
 
+/** 内観ギャラリー。施設内部の写真を複数表示する。 */
 export default function Gallery() {
   return (
     <section className="section-pad" id="interior">
@@ -13,7 +18,7 @@ export default function Gallery() {
         <p className="section-intro" data-reveal>働く場としての快適性にもこだわりました。</p>
         <div className="gallery">
           {IMAGES.map((img, i) => (
-            <div className="gal-card" key={img.num} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>
+            <div className="gal-card" key={img.num} data-reveal style={{ '--reveal-delay': `${i * 90}ms` } as CSSProperties}>
               <img src={img.src} alt={img.alt} />
               <div className="gal-label">
                 <div className="num">{img.num}</div>

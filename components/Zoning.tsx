@@ -1,4 +1,8 @@
-const ZONES = [
+import type { CSSProperties } from 'react';
+
+type Zone = { name: string; tag: string; rows: [string, string][]; rent: string };
+
+const ZONES: Zone[] = [
   {
     name: '倉庫棟　西区画（A・C）',
     tag: '西区画',
@@ -34,6 +38,7 @@ const ZONES = [
   },
 ];
 
+/** 区画プラン。倉庫と事務所の面積と賃料を表示する。 */
 export default function Zoning() {
   return (
     <section className="section-pad" id="zoning">
@@ -43,7 +48,7 @@ export default function Zoning() {
         <p className="section-intro" data-reveal>倉庫棟2区画と事務所棟。面積は用途に合わせて選べます（賃料・共益費は別途消費税）。</p>
         <div className="zoning-grid">
           {ZONES.map((z, i) => (
-            <div className="zone-card" key={z.name} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>
+            <div className="zone-card" key={z.name} data-reveal style={{ '--reveal-delay': `${i * 90}ms` } as CSSProperties}>
               <div className="zone-head">
                 <span className="zone-name">{z.name}</span>
                 <span className="zone-tag">{z.tag}</span>

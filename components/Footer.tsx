@@ -1,3 +1,4 @@
+/** フッターセクション。会社情報と法務表記を表示する。 */
 export default function Footer() {
   return (
     <footer>

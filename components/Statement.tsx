@@ -1,4 +1,8 @@
-const STATS = [
+import type { CSSProperties } from 'react';
+
+type Stat = { num: string; unit: string; label: string };
+
+const STATS: Stat[] = [
   { num: '5,846.82', unit: '㎡', label: '敷地面積（1,768.66坪）' },
   { num: '7,078.67', unit: '㎡', label: '延床面積（2,141.30坪）' },
   { num: '5.5', unit: 'm以上', label: '梁下有効高' },
@@ -6,6 +10,7 @@ const STATS = [
   { num: '約40', unit: '台', label: '駐車場（乗用車相当）' },
 ];
 
+/** 施設概要。敷地面積、延床面積など主要な統計情報を表示する。 */
 export default function Statement() {
   return (
     <section className="statement">
@@ -22,7 +27,7 @@ export default function Statement() {
         </p>
         <div className="stat-row">
           {STATS.map((s, i) => (
-            <div className="stat" key={s.label} data-reveal style={{ '--reveal-delay': `${i * 70}ms` }}>
+            <div className="stat" key={s.label} data-reveal style={{ '--reveal-delay': `${i * 70}ms` } as CSSProperties}>
               <div className="num">
                 {s.num}
                 <span>{s.unit}</span>

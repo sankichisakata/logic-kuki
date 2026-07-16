@@ -1,9 +1,14 @@
-const DATES = [
+import type { CSSProperties } from 'react';
+
+type ViewingDate = { dow: string; md: string; time: string };
+
+const DATES: ViewingDate[] = [
   { dow: '木曜日', md: '7月22日', time: '10:00 - 17:00' },
   { dow: '水曜日', md: '8月5日', time: '10:00 - 17:00' },
   { dow: '火曜日', md: '8月18日', time: '10:00 - 17:00' },
 ];
 
+/** 竣工前内覧会の日程と申込み情報を表示する。 */
 export default function Viewing() {
   return (
     <section className="section-pad viewing" id="viewing">
@@ -14,7 +19,7 @@ export default function Viewing() {
 
         <div className="dates-grid">
           {DATES.map((d, i) => (
-            <div className="date-card" key={d.md} data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
+            <div className="date-card" key={d.md} data-reveal style={{ '--reveal-delay': `${i * 80}ms` } as CSSProperties}>
               <div className="dow">{d.dow}</div>
               <div className="md">{d.md}</div>
               <div className="time">{d.time}</div>

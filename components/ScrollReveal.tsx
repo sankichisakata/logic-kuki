@@ -3,12 +3,9 @@
 import { useEffect } from 'react';
 
 /**
- * Observes every [data-reveal] element on the page and adds
- * .is-revealed the first time it scrolls into view. One-shot (elements
- * don't hide again on scroll-up) so re-reading a section isn't
- * interrupted by a re-play of the animation.
+ * [data-reveal]要素を監視し、初回表示時に .is-revealed を付与する（ワンショット）。
  */
-export default function ScrollReveal() {
+export default function ScrollReveal(): null {
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const els = Array.from(document.querySelectorAll('[data-reveal]'));

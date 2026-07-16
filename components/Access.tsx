@@ -1,9 +1,14 @@
-const ACCESS_ITEMS = [
+import type { CSSProperties } from 'react';
+
+type AccessItem = { name: string; note: string; dist: string };
+
+const ACCESS_ITEMS: AccessItem[] = [
   { name: '東北自動車道「加須IC」', note: 'ICから最短ルート', dist: '3.9km' },
   { name: '東北自動車道「久喜IC」', note: '圏央道方面からのアクセス', dist: '6.9km' },
   { name: 'JR東北本線「栗橋駅」', note: '宇都宮線・徒歩圏の最寄駅', dist: '2.2km' },
 ];
 
+/** アクセスセクション。ICと駅への距離を一覧表示する。 */
 export default function Access() {
   return (
     <section className="section-pad access" id="access">
@@ -17,7 +22,7 @@ export default function Access() {
             </p>
             <div className="access-list">
               {ACCESS_ITEMS.map((a, i) => (
-                <div className="access-item" key={a.name} data-reveal style={{ '--reveal-delay': `${i * 70}ms` }}>
+                <div className="access-item" key={a.name} data-reveal style={{ '--reveal-delay': `${i * 70}ms` } as CSSProperties}>
                   <div className="name">
                     {a.name}
                     <small>{a.note}</small>

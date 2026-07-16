@@ -1,4 +1,8 @@
-const POINTS = [
+import type { CSSProperties } from 'react';
+
+type AreaPoint = { n: string; title: string; desc: string };
+
+const POINTS: AreaPoint[] = [
   {
     n: '何がある',
     title: '物流・製造業の会社、元香取神社',
@@ -16,6 +20,7 @@ const POINTS = [
   },
 ];
 
+/** 周辺エリアガイド。地域の特性を3つの視点から表示する。 */
 export default function AreaGuide() {
   return (
     <section className="section-pad area" id="area">
@@ -35,7 +40,7 @@ export default function AreaGuide() {
           </div>
           <div className="area-points">
             {POINTS.map((p, i) => (
-              <div className="area-point" key={p.n} data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
+              <div className="area-point" key={p.n} data-reveal style={{ '--reveal-delay': `${i * 80}ms` } as CSSProperties}>
                 <div className="pn">{p.n}</div>
                 <div className="pt">{p.title}</div>
                 <div className="pd">{p.desc}</div>
